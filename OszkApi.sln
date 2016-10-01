@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9EF1A3AE-D558-493F-8AFF-B127F961E567}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2AE49E53-9C5C-4B85-860C-0225BD41F9CE}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "OszkApi", "src\OszkApi\OszkApi.xproj", "{7CD0E130-9A33-43A5-BB9D-2EAA4B4FE2DF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7CD0E130-9A33-43A5-BB9D-2EAA4B4FE2DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CD0E130-9A33-43A5-BB9D-2EAA4B4FE2DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CD0E130-9A33-43A5-BB9D-2EAA4B4FE2DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CD0E130-9A33-43A5-BB9D-2EAA4B4FE2DF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7CD0E130-9A33-43A5-BB9D-2EAA4B4FE2DF} = {9EF1A3AE-D558-493F-8AFF-B127F961E567}
+	EndGlobalSection
+EndGlobal
