@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  oszkapi:
+    image: oszkapi
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
