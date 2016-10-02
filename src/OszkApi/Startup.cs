@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using OszkConnector.Models;
 
 namespace OszkApi
 {
@@ -29,6 +30,9 @@ namespace OszkApi
         {
             // Add framework services.
             services.AddMvc();
+
+            // Inject MEK-book repository 
+            services.AddSingleton<IBookRepository, BookRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
