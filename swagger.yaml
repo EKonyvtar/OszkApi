@@ -1,0 +1,94 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: OSzK Api
+  description: Simple Api to provide access to MEK, EPA, DKA resources of the Hungarian National Library - oszk.hu
+  termsOfService: http://swagger.io/terms/
+  contact:
+    name: Ákos Muráti
+    email: akos@murati.hu
+    url: http://murati.hu
+  license:
+    name: MIT
+    url: http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT
+host: oszk.murati.hu
+basePath: /api
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /books:
+    get:
+      description: |
+        Returns all books from the system that the user has access to
+      operationId: findBooks #http://vmek.oszk.hu/html/vgi/vkereses/mobilkereses.phtml?szerzo=&cim=&tema=horthy&formatum=%25&offset=10#_talalat - 0
+      parameters:
+        - name: query
+          in: query
+          description: any text to filter by
+          required: false
+          type: string
+      responses:
+        200:
+          description: book response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Book'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /books/{id}:
+    get:
+      description: Returns a single book based on its ID
+      operationId: get book by Id
+      parameters:
+        - name: id
+          in: path
+          description: ID of the book
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: book response
+          schema:
+            $ref: '#/definitions/Book'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Book:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique identifier representing the book itself
+      title:
+        type: string
+        description: Title of the book
+      image:
+        type: string
+        description: Image URL representing the book.
+      description:
+        type: string
+        description: Description of book.
+      contributors:
+        type: array
+        items:
+          type: string
+  Error:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
