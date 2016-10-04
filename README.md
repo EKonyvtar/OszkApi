@@ -15,3 +15,7 @@ curl 'http://localhost:5000/api/audiobooks?query=gardonyi'
 
 ### Hosting
 The project can be hosted both in `docker` containers and in Azure App Services.
+Publicly accessible DEV endpoint in Azure is:
+ - http://oszkapi-dev.azurewebsites.net/api/audiobooks
+
+
