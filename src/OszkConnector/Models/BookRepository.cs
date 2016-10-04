@@ -7,10 +7,10 @@ namespace OszkConnector.Models
 {
     public class BookRepository : IBookRepository
     {
-        public IEnumerable<Book> Find(string query)
+        public IEnumerable<Book> Find(string query = "")
         {
             var client = new Client();
-            return client.FindAudioBook().Result;
+            return client.FindAudioBook(query).Result;
         }
 
         public Book Get(string UrlId)
@@ -20,7 +20,7 @@ namespace OszkConnector.Models
 
         public IEnumerable<Book> GetAll()
         {
-            return Find("");
+            return Find();
         }
     }
 }
