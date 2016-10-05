@@ -1,4 +1,5 @@
 {
+  "title": "OSzk API",
   "dependencies": {
     "Microsoft.NETCore.App": {
       "version": "1.0.1",
