@@ -12,5 +12,8 @@ namespace OszkConnector.Models
 
         public Uri FileUrl { get; set; }
         public string Title { get; set; }
+        public string Length { get; set; }
+
+        public string Size { get; set; }
     }
 }

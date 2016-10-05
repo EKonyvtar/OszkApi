@@ -21,11 +21,29 @@ namespace OszkConnector
 
             var response = await new HttpClient().PostAsync(uri, content);
             var html = MekConverter.ToUtf8(await response.Content.ReadAsByteArrayAsync());
-            var books = Client.ParseMekBookHtml(html);
+            var books = Client.ParseMekBookResultHtml(html);
             return books;
         }
 
-        private static IEnumerable<Book> ParseMekBookHtml(string html)
+        public static IEnumerable<AudioBookTrack> ParseMekAudioBookHtml(string html)
+        {
+            var tracks = new List<AudioBookTrack>();
+
+            var document = new HtmlDocument();
+            document.Load(new StringReader(html));
+            foreach (var li in document.DocumentNode.SelectNodes("//li"))
+            {
+                var track = new AudioBookTrack()
+                {
+                    Title = li.InnerText,
+                    FileName = li.InnerText
+                };
+                tracks.Add(track);
+            }
+            return tracks;
+        }
+
+        private static IEnumerable<Book> ParseMekBookResultHtml(string html)
         {
             var books = new List<Book>();
 
