@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace OszkConnector.Models
 {
-    public class BookRepository : IBookRepository
+    public class AudioBookRepository : IBookRepository
     {
         public IEnumerable<Book> Find(string query = "")
         {
