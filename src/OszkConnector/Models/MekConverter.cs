@@ -127,22 +127,15 @@ namespace OszkConnector.Models
             return books.AsQueryable();
         }
 
-        public static BookResult ParseMekBookPage(string html)
+        public static Book ParseMekBookPage(string html)
         {
-            var book = new BookResult();
+            var book = new Book();
             var document = new HtmlDocument();
             document.Load(new StringReader(html));
             var docNode = document.DocumentNode;
-            foreach (var f in docNode.SelectNodes("//a[contains(@href,'Javascript')]"))
+            foreach (var tag in docNode.SelectNodes("//meta[@name='dc.subject']"))
             {
-                try
-                {
-                    var url = f.ParentNode.ParentNode.SelectSingleNode("span").FirstChild.InnerText;
-                }
-                catch (Exception ex)
-                {
-                    //TODO: log error
-                }
+                book.Tags.Add(tag.InnerText);
             }
             return book;
         }
