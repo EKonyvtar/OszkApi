@@ -46,7 +46,7 @@ namespace OszkConnector.Models
             return cc;
         }
 
-        public static string ToFullTitle(string text)
+        public static string ClearFullTitle(string text)
         {
             return text.
                 Replace(STR_AUDIOBOOK, "").
@@ -57,19 +57,19 @@ namespace OszkConnector.Models
         public static string ToAuthor(string text)
         {
             if (text.Contains(":"))
-                return ToFullTitle(text).Split(':')[0]?.Trim();
+                return ClearFullTitle(text).Split(':')[0]?.Trim();
             return null;
         }
 
         public static string ToTitle(string text)
         {
             if (text.Contains(":"))
-                return ToFullTitle(text).Split(':')[1]?.Trim();
+                return ClearFullTitle(text).Split(':')[1]?.Trim();
             return text;
 
         }
 
-        public static AudioBookTrack ConvertFrom(string text)
+        public static AudioBookTrack ConvertAudioTrackFrom(string text)
         {
             //Eg: "01_bojgas.mp3 - Itt kezdődik (10:53 min. 7,8 Mbyte)"
             //     2     1    3           4                   5
@@ -98,7 +98,7 @@ namespace OszkConnector.Models
             foreach (var li in document.DocumentNode.SelectNodes("//li"))
                 try
                 {
-                    tracks.Add(MekConverter.ConvertFrom(li.InnerText));
+                    tracks.Add(MekConverter.ConvertAudioTrackFrom(li.InnerText));
                 }
                 catch
                 {
@@ -107,12 +107,12 @@ namespace OszkConnector.Models
             return tracks;
         }
 
-        public static IQueryable<BookResult> ParseMekBookResultPage(string html)
+        public static IQueryable<BookResult> ParseMekBookResultPage(string pageContent)
         {
             var books = new List<BookResult>();
 
             var document = new HtmlDocument();
-            document.Load(new StringReader(html));
+            document.Load(new StringReader(pageContent));
             var docNode = document.DocumentNode;
             foreach (var f in docNode.SelectNodes("//a[contains(@href,'Javascript')]"))
             {
@@ -121,7 +121,7 @@ namespace OszkConnector.Models
                     var url = f.ParentNode.ParentNode.SelectSingleNode("span").FirstChild.InnerText;
                     books.Add(new BookResult()
                     {
-                        FullTitle = MekConverter.ToFullTitle(f.InnerText),
+                        FullTitle = MekConverter.ClearFullTitle(f.InnerText),
                         Title = MekConverter.ToTitle(f.InnerText),
                         Creator = MekConverter.ToAuthor(f.InnerText),
                         UrlId = CatalogResolver.Resolve(url)?.UrlId
@@ -135,12 +135,13 @@ namespace OszkConnector.Models
             return books.AsQueryable();
         }
 
-        public static Book ParseMekBookPage(string html)
+        public static Book ParseMekBookPage(string pageContent)
         {
             var book = new Book();
             var document = new HtmlDocument();
-            document.Load(new StringReader(html));
+            document.Load(new StringReader(pageContent));
             var docNode = document.DocumentNode;
+            //TODO:
             foreach (var tag in docNode.SelectNodes("//meta[@name='dc.subject']"))
             {
                 book.Tags.Add(tag.InnerText);
@@ -148,17 +149,27 @@ namespace OszkConnector.Models
             return book;
         }
 
-        public static Book ParseMekContentsPage(string html)
+        public static Book ParseMekBookIndex(string xmlContent)
         {
             var book = new Book();
             var document = new HtmlDocument();
-            document.Load(new StringReader(html));
-            var docNode = document.DocumentNode;
+            document.Load(new StringReader(xmlContent));
+            var root = document.DocumentNode;
+            book.Title = ClearFullTitle(root.SelectNodes("//mek2/dc_title/main").FirstOrDefault()?.InnerText);
+            return book;
+        }
 
-            book.Contents = TrimMultiline(document.DocumentNode.SelectNodes("//tartalom").FirstOrDefault()?.InnerText);
-            book.Prologue = document.DocumentNode.SelectNodes("//eloszo").FirstOrDefault()?.InnerText;
-            book.Epilogue = document.DocumentNode.SelectNodes("//utoszo").FirstOrDefault()?.InnerText;
-            book.Summary = document.DocumentNode.SelectNodes("//ismerteto").FirstOrDefault()?.InnerText;
+        public static Book ParseMekContentsPage(string pageContent)
+        {
+            var book = new Book();
+            var document = new HtmlDocument();
+            document.Load(new StringReader(pageContent));
+            var root = document.DocumentNode;
+
+            book.Contents = TrimMultiline(root.SelectNodes("//tartalom").FirstOrDefault()?.InnerText);
+            book.Prologue = root.SelectNodes("//eloszo").FirstOrDefault()?.InnerText;
+            book.Epilogue = root.SelectNodes("//utoszo").FirstOrDefault()?.InnerText;
+            book.Summary = root.SelectNodes("//ismerteto").FirstOrDefault()?.InnerText;
             return book;
         }
     }
