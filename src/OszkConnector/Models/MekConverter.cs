@@ -155,15 +155,38 @@ namespace OszkConnector.Models
             var document = new HtmlDocument();
             document.Load(new StringReader(xmlContent));
             var root = document.DocumentNode;
+
+            //TODO: simplify selection, Single value
+            book.Url = root.SelectNodes("//mek2/dc_identifier/url").FirstOrDefault()?.InnerText;
+            book.UrlId = CatalogResolver.Resolve(book.Url).UrlId;
+            book.MekId = root.SelectNodes("//mek2/dc_identifier/mekid").FirstOrDefault()?.InnerText;
+            book.Urn = root.SelectNodes("//mek2/dc_identifier/URN").FirstOrDefault()?.InnerText;
+            
             book.Title = ClearFullTitle(root.SelectNodes("//mek2/dc_title/main").FirstOrDefault()?.InnerText);
+
+            //TODO: TryParse
+            book.Source = new Uri(root.SelectNodes("//mek2/dc_source/act_URL").FirstOrDefault()?.InnerText);
+            
+            book.Topics = new List<string>();
+            book.Topics.Add(root.SelectNodes("//mek2/dc_subject/topicgroup/broadtopic").FirstOrDefault()?.InnerText);
+            book.Topics.Add(root.SelectNodes("//mek2/dc_subject/topicgroup/topic").FirstOrDefault()?.InnerText);
+            book.Topics.Add(root.SelectNodes("//mek2/dc_subject/topicgroup/subtopic").FirstOrDefault()?.InnerText);
+
+            //TODO: multienumerate
+            book.KeyWords = new List<string>();
+            book.KeyWords.Add(root.SelectNodes("//mek2/dc_subject/keyword").FirstOrDefault()?.InnerText);
+
+            book.Period = root.SelectNodes("//mek2/dc_subject/period").FirstOrDefault()?.InnerText;
+            book.Language = root.SelectNodes("//mek2/dc_language/lang").FirstOrDefault()?.InnerText;
+
             //TODO: fix these
             book.Creators = root.SelectNodes("//mek2/dc_creator");
             book.Contributors = root.SelectNodes("//mek2/dc_contributor");
-            book.Title = ClearFullTitle(root.SelectNodes("//mek2/dc_title/main").FirstOrDefault()?.InnerText);
-            book.Title = ClearFullTitle(root.SelectNodes("//mek2/dc_title/main").FirstOrDefault()?.InnerText);
-            book.Title = ClearFullTitle(root.SelectNodes("//mek2/dc_title/main").FirstOrDefault()?.InnerText);
-            book.Title = ClearFullTitle(root.SelectNodes("//mek2/dc_title/main").FirstOrDefault()?.InnerText);
-            book.Title = ClearFullTitle(root.SelectNodes("//mek2/dc_title/main").FirstOrDefault()?.InnerText);
+            book.Publisher = new Publisher(); // - //mek2/dc_publisher
+
+            book.Related = new List<BookResult>();
+            //TODO: enumerate with Factory: //mek2/dc_relation 
+
             return book;
         }
 
