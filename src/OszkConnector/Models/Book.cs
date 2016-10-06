@@ -10,6 +10,7 @@ namespace OszkConnector.Models
         public string Contents { get; set; }
         public string Prologue { get; set; }
         public string Epilogue { get; set; }
+        public string Summary { get; set; }
         public string Contributor { get; set; }
         public List<string> Tags { get; set; }
     }

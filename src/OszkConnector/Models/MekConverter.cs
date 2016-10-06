@@ -26,6 +26,14 @@ namespace OszkConnector.Models
             return utf8.GetString(utf8Bytes);
         }
 
+        public static string TrimMultiline(string text)
+        {
+            var front = new Regex(@"^\s+", RegexOptions.Multiline);
+            text = front.Replace(text, "");
+            //TODO: back
+            return text;
+        }
+
         public static IEnumerable<KeyValuePair<string, string>> ToKeyValuePair(string postData)
         {
             var cc = new List<KeyValuePair<string, string>>();
@@ -137,6 +145,20 @@ namespace OszkConnector.Models
             {
                 book.Tags.Add(tag.InnerText);
             }
+            return book;
+        }
+
+        public static Book ParseMekContentsPage(string html)
+        {
+            var book = new Book();
+            var document = new HtmlDocument();
+            document.Load(new StringReader(html));
+            var docNode = document.DocumentNode;
+
+            book.Contents = TrimMultiline(document.DocumentNode.SelectNodes("//tartalom").FirstOrDefault()?.InnerText);
+            book.Prologue = document.DocumentNode.SelectNodes("//eloszo").FirstOrDefault()?.InnerText;
+            book.Epilogue = document.DocumentNode.SelectNodes("//utoszo").FirstOrDefault()?.InnerText;
+            book.Summary = document.DocumentNode.SelectNodes("//ismerteto").FirstOrDefault()?.InnerText;
             return book;
         }
     }
