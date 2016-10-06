@@ -1,0 +1,101 @@
+﻿<?xml-stylesheet type=text/css href='/html/vgi/mek2.css' ?>
+<mek2>
+  <dc_title>
+    <main>Bojgás az világba [Hangoskönyv]</main>
+    <uniform>Bojgás az világba [Hangoskönyv]</uniform>
+  </dc_title>
+  <dc_creator>
+    <sort>1</sort>
+    <role>szerző</role>
+    <FamilyName>Gárdonyi</FamilyName>
+    <GivenName>Géza</GivenName>
+    <AlternativeName>Göre Gábor</AlternativeName>
+    <invert>nem</invert>
+  </dc_creator>
+  <dc_contributor>
+    <sort>1</sort>
+    <role>felolvasó</role>
+    <FamilyName>Engler</FamilyName>
+    <GivenName>József</GivenName>
+    <invert>nem</invert>
+  </dc_contributor>
+  <dc_publisher>
+    <pub_name>Digitália</pub_name>
+    <place>[Pécs]</place>
+    <PublishYear>[2011]</PublishYear>
+  </dc_publisher>
+  <dc_date>
+    <mekevent>MEK-be való felvétel időpontja</mekevent>
+    <date>2011-04-12</date>
+  </dc_date>
+  <dc_identifier>
+    <URL>http://mek.oszk.hu/09300/09387</URL>
+    <mekid>MEK-09387</mekid>
+    <URN>urn:nbn:hu-101982</URN>
+  </dc_identifier>
+  <dc_source>
+    <act_URL>
+      http://digitalia.tudaskozpont-pecs.hu/?page_id=1867
+    </act_URL>
+    <other_source>A felolvasó engedélyével.</other_source>
+  </dc_source>
+  <dc_subject>
+    <topicgroup>
+      <broadtopic>Humán területek, kultúra, irodalom</broadtopic>
+      <topic>Szépirodalom, népköltészet</topic>
+      <subtopic>Klasszikus magyar irodalom</subtopic>
+    </topicgroup>
+    <keyword>magyar irodalom</keyword>
+    <period>19-20. sz.</period>
+    <keyword>hangoskönyv</keyword>
+  </dc_subject>
+  <dc_type>hangfelvétel</dc_type>
+  <dc_type>elbeszélés(ek)</dc_type>
+  <dc_type>humoreszk(ek)</dc_type>
+  <dc_format>
+    <name>MP3</name>
+    <SpecReq>96 kbs ; 02:07 h</SpecReq>
+  </dc_format>
+  <dc_language>
+    <lang>hun</lang>
+  </dc_language>
+  <dc_relation>
+    <MEK>
+      <MEK_name>Gárdonyi Géza: Bojgás az világba</MEK_name>
+      <MEK_URL>http://mek.oszk.hu/05700/05712/</MEK_URL>
+    </MEK>
+  </dc_relation>
+  <dc_relation>
+    <MEK>
+      <MEK_name>Gárdonyi Géza: A pesti úr [Hangoskönyv]</MEK_name>
+      <MEK_URL>http://mek.oszk.hu/09300/09361/</MEK_URL>
+    </MEK>
+  </dc_relation>
+  <dc_relation>
+    <MEK>
+      <MEK_name>Gárdonyi Géza: Göre Martsa lakodalma [Hangoskönyv]</MEK_name>
+      <MEK_URL>http://mek.oszk.hu/09300/09340/</MEK_URL>
+    </MEK>
+  </dc_relation>
+  <dc_relation>
+    <MEK>
+      <MEK_name>Gárdonyi Géza: Durbints sógor [Hangoskönyv]</MEK_name>
+      <MEK_URL>http://mek.oszk.hu/09400/09405/</MEK_URL>
+    </MEK>
+  </dc_relation>
+  <dc_relation>
+    <MEK>
+      <MEK_name>Gárdonyi Géza: Veszödelmek [Hangoskönyv]</MEK_name>
+      <MEK_URL>http://mek.oszk.hu/09400/09475/</MEK_URL>
+    </MEK>
+  </dc_relation>
+  <dc_relation>
+    <MEK>
+      <MEK_name>Gárdonyi Géza: Tapasztalatok [Hangoskönyv]</MEK_name>
+      <MEK_URL>http://mek.oszk.hu/10400/10454/</MEK_URL>
+    </MEK>
+  </dc_relation>
+  <note>
+    A hangfelvétel a MEK-05712 (Dante, ca 1930) alapján készült.
+  </note>
+</mek2>
