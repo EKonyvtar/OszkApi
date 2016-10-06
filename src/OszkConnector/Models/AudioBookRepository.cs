@@ -7,7 +7,7 @@ namespace OszkConnector.Models
 {
     public class AudioBookRepository : IBookRepository
     {
-        public IEnumerable<Book> Find(string query = "")
+        public IQueryable<Book> Find(string query = "")
         {
             var client = new Client();
             return client.FindAudioBook(query).Result;
@@ -18,7 +18,7 @@ namespace OszkConnector.Models
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Book> GetAll()
+        public IQueryable<Book> GetAll()
         {
             return Find();
         }
