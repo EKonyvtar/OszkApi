@@ -10,7 +10,7 @@ namespace OszkConnector.Models
         private static string URL_MEK_THUMBNAIL = "http://mek.oszk.hu/{0}/borito.jpg";
         private static string URL_MEK_ENDPOINT = "http://mek.oszk.hu/{0}";
 
-        public string Creator { get; set; }
+        public string Author { get; set; }
         public string Title { get; set; }
         public string UrlId { get; set; }
 
@@ -39,7 +39,7 @@ namespace OszkConnector.Models
         private string _fullTitle = null;
         public string FullTitle
         {
-            get { return _fullTitle ?? $"{Creator} - {Title}"; }
+            get { return _fullTitle ?? $"{Author} - {Title}"; }
             set { _fullTitle = value; }
         }
 
