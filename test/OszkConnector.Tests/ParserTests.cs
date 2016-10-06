@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Tests
 {
-    public class MekParserTests
+    public class ParserTests
     {
 
         [Fact]
