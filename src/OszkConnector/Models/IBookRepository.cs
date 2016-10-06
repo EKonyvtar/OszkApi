@@ -7,10 +7,10 @@ namespace OszkConnector.Models
 {
     public interface IBookRepository
     {
-        IQueryable<Book> GetAll();
+        IQueryable<BookResult> GetAll();
 
-        IQueryable<Book> Find(string query);
+        IQueryable<BookResult> Find(string query);
 
-        Book Get(string UrlId);
+        BookResult Get(string UrlId);
     }
 }
