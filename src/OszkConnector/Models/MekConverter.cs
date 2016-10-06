@@ -99,7 +99,7 @@ namespace OszkConnector.Models
             return tracks;
         }
 
-        public static IEnumerable<Book> ParseMekBookResultPage(string html)
+        public static IQueryable<Book> ParseMekBookResultPage(string html)
         {
             var books = new List<Book>();
 
@@ -124,7 +124,7 @@ namespace OszkConnector.Models
                     //TODO: log error
                 }
             }
-            return books;
+            return books.AsQueryable();
         }
 
         public static Book ParseMekBookPage(string html)

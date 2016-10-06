@@ -14,8 +14,10 @@ namespace Tests
         public async void MekCatalog()
         {
             var client = new Client();
-            //var result = await client.FindAudioBook("gardonyi");
-            //Assert.NotNull(result);
+            var result = await client.FindAudioBook("gardonyi");
+            Assert.NotNull(result);
+
+            Assert.Equal(result.Count(), 15);
         }
 
         [Fact]
