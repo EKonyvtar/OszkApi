@@ -123,7 +123,7 @@ namespace OszkConnector.Models
                     {
                         FullTitle = MekConverter.ClearFullTitle(f.InnerText),
                         Title = MekConverter.ToTitle(f.InnerText),
-                        Creator = MekConverter.ToAuthor(f.InnerText),
+                        Author = MekConverter.ToAuthor(f.InnerText),
                         UrlId = CatalogResolver.Resolve(url)?.UrlId
                     });
                 }
@@ -155,6 +155,14 @@ namespace OszkConnector.Models
             var document = new HtmlDocument();
             document.Load(new StringReader(xmlContent));
             var root = document.DocumentNode;
+            book.Title = ClearFullTitle(root.SelectNodes("//mek2/dc_title/main").FirstOrDefault()?.InnerText);
+            //TODO: fix these
+            book.Creators = root.SelectNodes("//mek2/dc_creator");
+            book.Contributors = root.SelectNodes("//mek2/dc_contributor");
+            book.Title = ClearFullTitle(root.SelectNodes("//mek2/dc_title/main").FirstOrDefault()?.InnerText);
+            book.Title = ClearFullTitle(root.SelectNodes("//mek2/dc_title/main").FirstOrDefault()?.InnerText);
+            book.Title = ClearFullTitle(root.SelectNodes("//mek2/dc_title/main").FirstOrDefault()?.InnerText);
+            book.Title = ClearFullTitle(root.SelectNodes("//mek2/dc_title/main").FirstOrDefault()?.InnerText);
             book.Title = ClearFullTitle(root.SelectNodes("//mek2/dc_title/main").FirstOrDefault()?.InnerText);
             return book;
         }
