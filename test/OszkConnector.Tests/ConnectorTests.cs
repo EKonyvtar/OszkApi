@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Tests
 {
-    public class OszkConnectorTests
+    public class ConnectorTests
     {
         [Fact]
         public async void MekCatalog()
