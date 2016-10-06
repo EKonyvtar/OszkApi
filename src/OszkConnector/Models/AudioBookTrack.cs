@@ -15,5 +15,10 @@ namespace OszkConnector.Models
         public string Length { get; set; }
 
         public string Size { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Track} - {FileName} - {Title}";
+        }
     }
 }

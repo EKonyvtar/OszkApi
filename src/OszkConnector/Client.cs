@@ -21,53 +21,7 @@ namespace OszkConnector
 
             var response = await new HttpClient().PostAsync(uri, content);
             var html = MekConverter.ToUtf8(await response.Content.ReadAsByteArrayAsync());
-            var books = Client.ParseMekBookResultHtml(html);
-            return books;
-        }
-
-        public static IEnumerable<AudioBookTrack> ParseMekAudioBookHtml(string html)
-        {
-            var tracks = new List<AudioBookTrack>();
-
-            var document = new HtmlDocument();
-            document.Load(new StringReader(html));
-            foreach (var li in document.DocumentNode.SelectNodes("//li"))
-            {
-                var track = new AudioBookTrack()
-                {
-                    Title = li.InnerText,
-                    FileName = li.InnerText
-                };
-                tracks.Add(track);
-            }
-            return tracks;
-        }
-
-        private static IEnumerable<Book> ParseMekBookResultHtml(string html)
-        {
-            var books = new List<Book>();
-
-            var document = new HtmlDocument();
-            document.Load(new StringReader(html));
-            var docNode = document.DocumentNode;
-            foreach (var f in docNode.SelectNodes("//a[contains(@href,'Javascript')]"))
-            {
-                try
-                {
-                    var url = f.ParentNode.ParentNode.SelectSingleNode("span").FirstChild.InnerText;
-                    books.Add(new Book()
-                    {
-                        FullTitle = MekConverter.ToFullTitle(f.InnerText),
-                        Title = MekConverter.ToTitle(f.InnerText),
-                        Author = MekConverter.ToAuthor(f.InnerText),
-                        UrlId = CatalogResolver.Resolve(url)?.UrlId
-                    });
-                }
-                catch (Exception ex)
-                {
-                    //TODO: log error
-                }
-            }
+            var books = MekConverter.ParseMekBookResultPage(html);
             return books;
         }
     }
