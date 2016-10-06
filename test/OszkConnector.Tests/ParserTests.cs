@@ -15,7 +15,18 @@ namespace Tests
         public void MekAudioBookPageParseTest()
         {
             string pagecontent = File.ReadAllText(@"./fixtures/mek_page_audiobook.html");
+            //throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void MekIndexParseTest()
+        {
+            string pagecontent = File.ReadAllText(@"./fixtures/index.xml");
             Assert.NotEmpty(pagecontent);
+
+            var book = MekConverter.ParseMekBookIndex(pagecontent);
+            Assert.NotNull(book);
+            Assert.NotEmpty(book.Title);
         }
 
         [Fact]

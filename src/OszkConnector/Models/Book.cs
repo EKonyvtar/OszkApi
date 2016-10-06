@@ -13,5 +13,11 @@ namespace OszkConnector.Models
         public string Summary { get; set; }
         public string Contributor { get; set; }
         public List<string> Tags { get; set; }
+
+        public void Merge(Book from)
+        {
+            //TODO:
+            throw new NotImplementedException();
+        }
     }
 }
