@@ -1,20 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace OszkConnector.Models
 {
+    [DataContract]
     public class BookResult
     {
         private static string URL_MEK_THUMBNAIL = "http://mek.oszk.hu/{0}/borito.jpg";
         private static string URL_MEK_ENDPOINT = "http://mek.oszk.hu/{0}";
 
+        [DataMember]
         public string Author { get; set; }
+        [DataMember]
         public string Title { get; set; }
-        public string UrlId { get; set; }
+        [DataMember]
+        public string Id { get; set; }
+
+        private string _urlId = null;
+
+        public string UrlId
+        {
+            get { return _urlId ?? $"{Id.Substring(0, 3)}00/{Id}"; }
+            set { _urlId = value; }
+        }
 
         private string _url = null;
+        [DataMember]
         public string Url
         {
             get { return _url ?? string.Format(URL_MEK_ENDPOINT, UrlId); }
@@ -22,6 +36,7 @@ namespace OszkConnector.Models
         }
 
         private Uri _ThumbnailUrl = null;
+        [DataMember]
         public Uri ThumbnailUrl
         {
             get
@@ -37,6 +52,7 @@ namespace OszkConnector.Models
 
 
         private string _fullTitle = null;
+        [DataMember]
         public string FullTitle
         {
             get { return _fullTitle ?? $"{Author}: {Title}"; }
@@ -45,7 +61,7 @@ namespace OszkConnector.Models
 
         public override string ToString()
         {
-            return $"[{UrlId}] {FullTitle}";
+            return $"[{Id}] {FullTitle}";
         }
     }
 }

@@ -21,9 +21,9 @@ namespace OszkApi.Controllers
         }
 
         [HttpGet("{id}", Name = "GetAudioBook")]
-        public IActionResult GetByUrlId(string urlId)
+        public IActionResult GetByUrlId(int id)
         {
-            var book = _bookRepository.Get(urlId);
+            var book = _bookRepository.Get(id);
             if (book == null)
                 return NotFound();
 
