@@ -32,7 +32,7 @@ namespace Tests
         public async void GetAudioBookById()
         {
             var client = new Client();
-            var result = await client.GetBook(02965);
+            var result = await client.GetBook(2965);
             Assert.NotNull(result);
         }
     }

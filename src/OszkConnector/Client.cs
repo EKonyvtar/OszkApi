@@ -27,12 +27,12 @@ namespace OszkConnector
 
         public async Task<Book> GetBook(string UrlId)
         {
-            return GetBook(CatalogResolver.Resolve(UrlId).Id);
+            return await GetBook(CatalogResolver.Resolve(UrlId).IntId);
         }
 
         public async Task<Book> GetBook(int id)
         {
-            var urlId = CatalogResolver.Resolve(id.ToString());
+            var urlId = CatalogResolver.Resolve(id).UrlId;
             var uri = new Uri($"{MEK_ENDPOINT_URL}/{urlId}/index.xml");
             var response = await new HttpClient().GetAsync(uri);
             var html = MekConverter.ToUtf8(await response.Content.ReadAsByteArrayAsync());
