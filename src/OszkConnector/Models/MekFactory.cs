@@ -71,8 +71,6 @@ namespace OszkConnector.Models
                     books.Add(new BookResult()
                     {
                         FullTitle = MekConvert.ClearFullTitle(title),
-                        Title = MekConvert.ToTitle(title),
-                        Author = MekConvert.ToAuthor(title),
                         Id = catalog?.Id,
                         UrlId = catalog?.UrlId
                     });
@@ -91,8 +89,12 @@ namespace OszkConnector.Models
             html.Load(new StringReader(content));
             var doc = html.DocumentNode;
 
-            book.Url = StringFromNode(doc.SelectNodes("//mek2/dc_identifier/url"));
-            book.UrlId = CatalogResolver.Resolve(book.Url).UrlId;
+            var url = StringFromNode(doc.SelectNodes("//mek2/dc_identifier/url"));
+            var catalog = CatalogResolver.Resolve(url);
+
+            book.Url = url;
+            book.Id = catalog?.Id;
+            book.UrlId = catalog?.UrlId;
             book.MekId = StringFromNode(doc.SelectNodes("//mek2/dc_identifier/mekid"));
             book.Urn = StringFromNode(doc.SelectNodes("//mek2/dc_identifier/urn"));
 

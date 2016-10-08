@@ -10,6 +10,19 @@ namespace OszkConnector.Models
     public class Book : BookResult
     {
         [DataMember]
+        public string Author { get; set; }
+        [DataMember]
+        public string Title { get; set; }
+
+        private string _fullTitle = null;
+        [DataMember]
+        public new string FullTitle
+        {
+            get { return _fullTitle ?? $"{Author}: {Title}"; }
+            set { _fullTitle = value; }
+        }
+
+        [DataMember]
         public string Urn { get; set; }
         [DataMember]
         public string MekId { get; set; }
@@ -46,7 +59,7 @@ namespace OszkConnector.Models
 
         [DataMember]
         public List<BookResult> Related { get; set; }
-        
+
 
         public void Merge(Book from)
         {
