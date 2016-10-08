@@ -123,12 +123,14 @@ namespace OszkConnector.Models
                 try
                 {
                     var url = f.ParentNode.ParentNode.SelectSingleNode("span").FirstChild.InnerText;
+                    var catalog = CatalogResolver.Resolve(url);
                     books.Add(new BookResult()
                     {
                         FullTitle = MekConvert.ClearFullTitle(f.InnerText),
                         Title = MekConvert.ToTitle(f.InnerText),
                         Author = MekConvert.ToAuthor(f.InnerText),
-                        UrlId = CatalogResolver.Resolve(url)?.UrlId
+                        Id = catalog?.Id,
+                        UrlId = catalog?.UrlId
                     });
                 }
                 catch (Exception ex)

@@ -67,13 +67,14 @@ namespace OszkConnector.Models
                 {
                     var title = node.ChildNodes["mek"]?.ChildNodes["mek_name"]?.InnerText;
                     var url = node.ChildNodes["mek"]?.ChildNodes["mek_url"]?.InnerText;
-
+                    var catalog = CatalogResolver.Resolve(url);
                     books.Add(new BookResult()
                     {
                         FullTitle = MekConvert.ClearFullTitle(title),
                         Title = MekConvert.ToTitle(title),
                         Author = MekConvert.ToAuthor(title),
-                        UrlId = CatalogResolver.Resolve(url)?.UrlId
+                        Id = catalog?.Id,
+                        UrlId = catalog?.UrlId
                     });
                 }
                 catch

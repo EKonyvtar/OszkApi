@@ -13,9 +13,10 @@ namespace OszkConnector.Models
             return client.FindAudioBook(query).Result;
         }
 
-        public BookResult Get(string UrlId)
+        public BookResult Get(int Id)
         {
-            throw new NotImplementedException();
+            var client = new Client();
+            return client.GetBook(Id).Result;
         }
 
         public IQueryable<BookResult> GetAll()
