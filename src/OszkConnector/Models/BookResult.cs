@@ -39,7 +39,7 @@ namespace OszkConnector.Models
         private string _fullTitle = null;
         public string FullTitle
         {
-            get { return _fullTitle ?? $"{Author} - {Title}"; }
+            get { return _fullTitle ?? $"{Author}: {Title}"; }
             set { _fullTitle = value; }
         }
 
