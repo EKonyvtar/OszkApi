@@ -23,12 +23,11 @@ namespace OszkConnector.Models
             set { _urlId = value; }
         }
 
-        private string _url = null;
-
-
         [DataMember]
         public string FullTitle { get; set; }
 
+
+        private string _url = null;
         [DataMember]
         public string Url
         {
@@ -51,6 +50,8 @@ namespace OszkConnector.Models
             }
         }
 
+        [DataMember(Name = "__metadata")]
+        public BookMetadata Metadata { get; set; }
         public override string ToString()
         {
             return $"[{Id}] {FullTitle}";

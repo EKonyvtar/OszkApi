@@ -13,7 +13,7 @@ namespace OszkConnector.Models
             return client.FindAudioBook(query).Result;
         }
 
-        public BookResult Get(int Id)
+        public Book Get(string Id)
         {
             var client = new Client();
             return client.GetBook(Id).Result;

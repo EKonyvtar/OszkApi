@@ -11,6 +11,6 @@ namespace OszkConnector.Models
 
         IQueryable<BookResult> Find(string query);
 
-        BookResult Get(int Id);
+        Book Get(string Id);
     }
 }

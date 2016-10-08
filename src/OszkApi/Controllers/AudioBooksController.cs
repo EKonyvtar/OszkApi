@@ -21,7 +21,7 @@ namespace OszkApi.Controllers
         }
 
         [HttpGet("{id}", Name = "GetAudioBook")]
-        public IActionResult GetByUrlId(int id)
+        public IActionResult GetByCatalogId(string id)
         {
             var book = _bookRepository.Get(id);
             if (book == null)
