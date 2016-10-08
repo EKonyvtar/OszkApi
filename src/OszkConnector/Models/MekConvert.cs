@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace OszkConnector.Models
 {
-    public class MekConverter
+    public class MekConvert
     {
-        public const string STR_AUDIOBOOK = "[Hangoskönyv]";
+        public const string STR_AUDIOBOOK = "[Hangoskönyv]|[MVGYOSZ hangoskönyvek]";
         public const string STR_NBSP = "&nbsp;";
 
         private static Regex REGEX_TITLE = new Regex($"^(.*){STR_NBSP}(.*)$");
@@ -26,11 +26,15 @@ namespace OszkConnector.Models
             return utf8.GetString(utf8Bytes);
         }
 
-        public static string TrimMultiline(string text)
+        public static string TrimAll(string text)
         {
+            if (string.IsNullOrWhiteSpace(text))
+                return null;
+
             var front = new Regex(@"^\s+", RegexOptions.Multiline);
+            var back = new Regex(@"\s+$", RegexOptions.Multiline);
             text = front.Replace(text, "");
-            //TODO: back
+            text = back.Replace(text, "");
             return text;
         }
 
@@ -98,7 +102,7 @@ namespace OszkConnector.Models
             foreach (var li in document.DocumentNode.SelectNodes("//li"))
                 try
                 {
-                    tracks.Add(MekConverter.ConvertAudioTrackFrom(li.InnerText));
+                    tracks.Add(MekConvert.ConvertAudioTrackFrom(li.InnerText));
                 }
                 catch
                 {
@@ -121,9 +125,9 @@ namespace OszkConnector.Models
                     var url = f.ParentNode.ParentNode.SelectSingleNode("span").FirstChild.InnerText;
                     books.Add(new BookResult()
                     {
-                        FullTitle = MekConverter.ClearFullTitle(f.InnerText),
-                        Title = MekConverter.ToTitle(f.InnerText),
-                        Author = MekConverter.ToAuthor(f.InnerText),
+                        FullTitle = MekConvert.ClearFullTitle(f.InnerText),
+                        Title = MekConvert.ToTitle(f.InnerText),
+                        Author = MekConvert.ToAuthor(f.InnerText),
                         UrlId = CatalogResolver.Resolve(url)?.UrlId
                     });
                 }
@@ -149,51 +153,6 @@ namespace OszkConnector.Models
             return book;
         }
 
-        public static Book ParseMekBookIndex(string xmlContent)
-        {
-            var book = new Book();
-            var document = new HtmlDocument();
-            document.Load(new StringReader(xmlContent));
-            var root = document.DocumentNode;
-
-            book.Url = root.SelectNodes("//mek2/dc_identifier/url")?.First().InnerText;
-            book.UrlId = CatalogResolver.Resolve(book.Url).UrlId;
-            book.MekId = root.SelectNodes("//mek2/dc_identifier/mekid")?.First().InnerText;
-            book.Urn = root.SelectNodes("//mek2/dc_identifier/urn")?.First().InnerText;
-
-            book.Title = ClearFullTitle(root.SelectNodes("//mek2/dc_title/main")?.First().InnerText);
-
-            Uri source = null;
-            Uri.TryCreate(root.SelectNodes("//mek2/dc_source/act_url")?.First().InnerText, UriKind.RelativeOrAbsolute, out source);
-            book.Source = source;
-
-            book.Topics = new List<string>();
-            book.Topics.Add(root.SelectNodes("//mek2/dc_subject/topicgroup/broadtopic")?.First().InnerText);
-            book.Topics.Add(root.SelectNodes("//mek2/dc_subject/topicgroup/topic")?.First().InnerText);
-            book.Topics.Add(root.SelectNodes("//mek2/dc_subject/topicgroup/subtopic")?.First().InnerText);
-
-            book.KeyWords = MekFactory.CreateStringsFromIndexNode(root.SelectNodes("//mek2/dc_subject/keyword"));
-
-            book.Period = root.SelectNodes("//mek2/dc_subject/period")?.First().InnerText;
-            book.Language = root.SelectNodes("//mek2/dc_language/lang")?.First().InnerText;
-
-            book.Creators = MekFactory.CreateContributorsFromIndexNode(root.SelectNodes("//mek2/dc_creator"));
-            book.Author = book.Creators?.First()?.ToString();
-            book.Contributors = MekFactory.CreateContributorsFromIndexNode(root.SelectNodes("//mek2/dc_contributor"));
-
-            var publisher = root.SelectNodes("//mek2/dc_publisher")?.First();
-            if (publisher != null)
-            {
-                book.Publisher = publisher.ChildNodes["pub_name"]?.InnerText;
-                book.PublishPlace = publisher.ChildNodes["place"]?.InnerText;
-                book.PublishYear = publisher.ChildNodes["publishYear"]?.InnerText;
-            }
-
-            book.Related = MekFactory.CreateBooksFromIndexNode(root.SelectNodes("//mek2/dc_relation"));
-
-            return book;
-        }
-
         public static Book CreateBookFromContentsPage(string pageContent)
         {
             var book = new Book();
@@ -201,7 +160,7 @@ namespace OszkConnector.Models
             document.Load(new StringReader(pageContent));
             var root = document.DocumentNode;
 
-            book.Contents = TrimMultiline(root.SelectNodes("//tartalom").FirstOrDefault()?.InnerText);
+            book.Contents = TrimAll(root.SelectNodes("//tartalom").FirstOrDefault()?.InnerText);
             book.Prologue = root.SelectNodes("//eloszo").FirstOrDefault()?.InnerText;
             book.Epilogue = root.SelectNodes("//utoszo").FirstOrDefault()?.InnerText;
             book.Summary = root.SelectNodes("//ismerteto").FirstOrDefault()?.InnerText;

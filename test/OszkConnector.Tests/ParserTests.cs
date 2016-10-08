@@ -24,7 +24,7 @@ namespace Tests
             string pagecontent = File.ReadAllText(@"./fixtures/index.xml");
             Assert.NotEmpty(pagecontent);
 
-            var book = MekConverter.ParseMekBookIndex(pagecontent);
+            var book = MekFactory.CreateBookFromIndex(pagecontent);
             Assert.NotNull(book);
             Assert.NotEmpty(book.Title);
         }
@@ -35,7 +35,7 @@ namespace Tests
             string pagecontent = File.ReadAllText(@"./fixtures/mek_page_fulszoveg.html");
             Assert.NotEmpty(pagecontent);
 
-            var book = MekConverter.CreateBookFromContentsPage(pagecontent);
+            var book = MekConvert.CreateBookFromContentsPage(pagecontent);
 
             Assert.NotNull(book);
             Assert.NotEmpty(book.Contents);
@@ -50,7 +50,7 @@ namespace Tests
             string pagecontent = File.ReadAllText(@"./fixtures/mek_page_mp3.html");
             Assert.NotEmpty(pagecontent);
 
-            var tracks = MekConverter.ParseMekMP3Page(pagecontent);
+            var tracks = MekConvert.ParseMekMP3Page(pagecontent);
             Assert.NotNull(tracks);
             Assert.NotEmpty(tracks);
 
