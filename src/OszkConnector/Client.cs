@@ -24,5 +24,13 @@ namespace OszkConnector
             var books = MekConverter.ParseMekBookResultPage(html);
             return books;
         }
+
+        public async Task<Book> GetBook(string UrlId)
+        {
+            var book = new Book();
+
+
+            return book;
+        }
     }
 }

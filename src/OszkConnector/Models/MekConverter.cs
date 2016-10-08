@@ -156,41 +156,45 @@ namespace OszkConnector.Models
             document.Load(new StringReader(xmlContent));
             var root = document.DocumentNode;
 
-            //TODO: simplify selection, Single value
-            book.Url = root.SelectNodes("//mek2/dc_identifier/url").FirstOrDefault()?.InnerText;
+            book.Url = root.SelectNodes("//mek2/dc_identifier/url")?.First().InnerText;
             book.UrlId = CatalogResolver.Resolve(book.Url).UrlId;
-            book.MekId = root.SelectNodes("//mek2/dc_identifier/mekid").FirstOrDefault()?.InnerText;
-            book.Urn = root.SelectNodes("//mek2/dc_identifier/URN").FirstOrDefault()?.InnerText;
-            
-            book.Title = ClearFullTitle(root.SelectNodes("//mek2/dc_title/main").FirstOrDefault()?.InnerText);
+            book.MekId = root.SelectNodes("//mek2/dc_identifier/mekid")?.First().InnerText;
+            book.Urn = root.SelectNodes("//mek2/dc_identifier/urn")?.First().InnerText;
 
-            //TODO: TryParse
-            book.Source = new Uri(root.SelectNodes("//mek2/dc_source/act_URL").FirstOrDefault()?.InnerText);
-            
+            book.Title = ClearFullTitle(root.SelectNodes("//mek2/dc_title/main")?.First().InnerText);
+
+            Uri source = null;
+            Uri.TryCreate(root.SelectNodes("//mek2/dc_source/act_url")?.First().InnerText, UriKind.RelativeOrAbsolute, out source);
+            book.Source = source;
+
             book.Topics = new List<string>();
-            book.Topics.Add(root.SelectNodes("//mek2/dc_subject/topicgroup/broadtopic").FirstOrDefault()?.InnerText);
-            book.Topics.Add(root.SelectNodes("//mek2/dc_subject/topicgroup/topic").FirstOrDefault()?.InnerText);
-            book.Topics.Add(root.SelectNodes("//mek2/dc_subject/topicgroup/subtopic").FirstOrDefault()?.InnerText);
+            book.Topics.Add(root.SelectNodes("//mek2/dc_subject/topicgroup/broadtopic")?.First().InnerText);
+            book.Topics.Add(root.SelectNodes("//mek2/dc_subject/topicgroup/topic")?.First().InnerText);
+            book.Topics.Add(root.SelectNodes("//mek2/dc_subject/topicgroup/subtopic")?.First().InnerText);
 
-            //TODO: multienumerate
-            book.KeyWords = new List<string>();
-            book.KeyWords.Add(root.SelectNodes("//mek2/dc_subject/keyword").FirstOrDefault()?.InnerText);
+            book.KeyWords = MekFactory.CreateStringsFromIndexNode(root.SelectNodes("//mek2/dc_subject/keyword"));
 
-            book.Period = root.SelectNodes("//mek2/dc_subject/period").FirstOrDefault()?.InnerText;
-            book.Language = root.SelectNodes("//mek2/dc_language/lang").FirstOrDefault()?.InnerText;
+            book.Period = root.SelectNodes("//mek2/dc_subject/period")?.First().InnerText;
+            book.Language = root.SelectNodes("//mek2/dc_language/lang")?.First().InnerText;
 
-            //TODO: fix these
-            book.Creators = root.SelectNodes("//mek2/dc_creator");
-            book.Contributors = root.SelectNodes("//mek2/dc_contributor");
-            book.Publisher = new Publisher(); // - //mek2/dc_publisher
+            book.Creators = MekFactory.CreateContributorsFromIndexNode(root.SelectNodes("//mek2/dc_creator"));
+            book.Author = book.Creators?.First()?.ToString();
+            book.Contributors = MekFactory.CreateContributorsFromIndexNode(root.SelectNodes("//mek2/dc_contributor"));
 
-            book.Related = new List<BookResult>();
-            //TODO: enumerate with Factory: //mek2/dc_relation 
+            var publisher = root.SelectNodes("//mek2/dc_publisher")?.First();
+            if (publisher != null)
+            {
+                book.Publisher = publisher.ChildNodes["pub_name"]?.InnerText;
+                book.PublishPlace = publisher.ChildNodes["place"]?.InnerText;
+                book.PublishYear = publisher.ChildNodes["publishYear"]?.InnerText;
+            }
+
+            book.Related = MekFactory.CreateBooksFromIndexNode(root.SelectNodes("//mek2/dc_relation"));
 
             return book;
         }
 
-        public static Book ParseMekContentsPage(string pageContent)
+        public static Book CreateBookFromContentsPage(string pageContent)
         {
             var book = new Book();
             var document = new HtmlDocument();
