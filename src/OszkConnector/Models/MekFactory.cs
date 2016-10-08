@@ -12,11 +12,14 @@ namespace OszkConnector.Models
         {
             var strings = new List<string>();
             foreach (var node in nodeCollection)
-                if (nodeName != null)
-                    strings.Add(node.ChildNodes[nodeName]?.InnerText);
-                else
-                    strings.Add(node.InnerText);
+            {
+                string text = (nodeName != null) ?
+                    node.ChildNodes[nodeName]?.InnerText :
+                    node.InnerText;
 
+                if (!string.IsNullOrWhiteSpace(text))
+                    strings.Add(MekConverter.TrimMultiline(text));
+            }
             return strings;
         }
         public static List<Contributor> CreateContributorsFromIndexNode(HtmlNodeCollection nodeCollection)
