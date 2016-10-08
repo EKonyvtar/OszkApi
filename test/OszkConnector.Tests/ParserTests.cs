@@ -35,7 +35,7 @@ namespace Tests
             string pagecontent = File.ReadAllText(@"./fixtures/mek_page_fulszoveg.html");
             Assert.NotEmpty(pagecontent);
 
-            var book = MekConvert.CreateBookFromContentsPage(pagecontent);
+            var book = MekFactory.CreateBookFromContentsPage(pagecontent);
 
             Assert.NotNull(book);
             Assert.NotEmpty(book.Contents);

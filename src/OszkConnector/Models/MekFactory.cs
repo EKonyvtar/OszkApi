@@ -26,7 +26,7 @@ namespace OszkConnector.Models
                     node.InnerText;
 
                 if (!string.IsNullOrWhiteSpace(text))
-                    strings.Add(MekConvert.TrimAll(text));
+                    strings.Add(MekConvert.ClearText(text));
             }
             return strings;
         }
@@ -38,9 +38,9 @@ namespace OszkConnector.Models
                 {
                     contributors.Add(new Contributor()
                     {
-                        FamilyName = MekConvert.TrimAll(node.ChildNodes["familyname"]?.InnerText),
-                        GivenName = MekConvert.TrimAll(node.ChildNodes["givenname"]?.InnerText),
-                        Role = MekConvert.TrimAll(node.ChildNodes["role"]?.InnerText)
+                        FamilyName = MekConvert.ClearText(node.ChildNodes["familyname"]?.InnerText),
+                        GivenName = MekConvert.ClearText(node.ChildNodes["givenname"]?.InnerText),
+                        Role = MekConvert.ClearText(node.ChildNodes["role"]?.InnerText)
                     });
                 }
                 catch
@@ -70,7 +70,7 @@ namespace OszkConnector.Models
                     var catalog = CatalogResolver.Resolve(url);
                     books.Add(new BookResult()
                     {
-                        FullTitle = MekConvert.ClearFullTitle(title),
+                        FullTitle = MekConvert.ClearText(title),
                         Id = catalog?.Id,
                         UrlId = catalog?.UrlId
                     });
@@ -80,6 +80,20 @@ namespace OszkConnector.Models
                     //TODO: log
                 }
             return books;
+        }
+
+        public static Book CreateBookFromContentsPage(string pageContent)
+        {
+            var book = new Book();
+            var document = new HtmlDocument();
+            document.Load(new StringReader(pageContent));
+            var root = document.DocumentNode;
+
+            book.Contents = MekConvert.ClearText(root.SelectNodes("//tartalom").FirstOrDefault()?.InnerText);
+            book.Prologue = root.SelectNodes("//eloszo").FirstOrDefault()?.InnerText;
+            book.Epilogue = root.SelectNodes("//utoszo").FirstOrDefault()?.InnerText;
+            book.Summary = root.SelectNodes("//ismerteto").FirstOrDefault()?.InnerText;
+            return book;
         }
 
         public static Book CreateBookFromIndex(string content)
@@ -98,7 +112,7 @@ namespace OszkConnector.Models
             book.MekId = StringFromNode(doc.SelectNodes("//mek2/dc_identifier/mekid"));
             book.Urn = StringFromNode(doc.SelectNodes("//mek2/dc_identifier/urn"));
 
-            book.Title = MekConvert.ClearFullTitle(StringFromNode(doc.SelectNodes("//mek2/dc_title/main")));
+            book.Title = MekConvert.ClearText(StringFromNode(doc.SelectNodes("//mek2/dc_title/main")));
 
             Uri source = null;
             Uri.TryCreate(StringFromNode(doc.SelectNodes("//mek2/dc_source/act_url")), UriKind.RelativeOrAbsolute, out source);
@@ -121,9 +135,9 @@ namespace OszkConnector.Models
             var publisher = doc.SelectNodes("//mek2/dc_publisher")?.First();
             if (publisher != null)
             {
-                book.Publisher = MekConvert.TrimAll(publisher.ChildNodes["pub_name"]?.InnerText);
-                book.PublishPlace = MekConvert.TrimAll(publisher.ChildNodes["place"]?.InnerText);
-                book.PublishYear = MekConvert.TrimAll(publisher.ChildNodes["publishYear"]?.InnerText);
+                book.Publisher = MekConvert.ClearText(publisher.ChildNodes["pub_name"]?.InnerText);
+                book.PublishPlace = MekConvert.ClearText(publisher.ChildNodes["place"]?.InnerText);
+                book.PublishYear = MekConvert.ClearText(publisher.ChildNodes["publishYear"]?.InnerText);
             }
 
             book.Related = BooksFromNode(doc.SelectNodes("//mek2/dc_relation"));
