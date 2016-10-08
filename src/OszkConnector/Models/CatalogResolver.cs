@@ -11,7 +11,7 @@ namespace OszkConnector.Models
         private const string REGEX_PROTOCOL = "^https?://";
         private const string REGEX_URL_ID = "(\\d+[\\\\/](\\d+))";
         private const string REGEX_MEK_ID = @"(MEK-(\d+))";
-        private const string REGEX_NUM_ID = @"(\d{5})";
+        private const string REGEX_NUM_ID = @"(\d+)";
 
 
         public CatalogResolver(string catalogReference)
@@ -39,6 +39,9 @@ namespace OszkConnector.Models
                 UrlId = matches.Groups[1].Value;
                 Id = matches.Groups[2].Value;
             }
+
+            // Enforce 5-digit Ids
+            if (Id != null && Id.Length < 5) Id = IntId.ToString("D5");
 
             MekId = MekId ?? $"MEK-{Id}";
             UrlId = UrlId ?? $"{Id.Substring(0, 3)}00/{Id}";
