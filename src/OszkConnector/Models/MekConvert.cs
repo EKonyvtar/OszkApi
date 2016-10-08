@@ -11,7 +11,7 @@ namespace OszkConnector.Models
 {
     public class MekConvert
     {
-        public const string STR_AUDIOBOOK = "[Hangoskönyv]|[MVGYOSZ hangoskönyvek]";
+        public const string REGEX_AUDIOBOOK = @"\[Hangoskönyv\]|\[MVGYOSZ hangoskönyvek\]";
         public const string STR_NBSP = "&nbsp;";
 
         private static Regex REGEX_TITLE = new Regex($"^(.*){STR_NBSP}(.*)$");
@@ -26,14 +26,26 @@ namespace OszkConnector.Models
             return utf8.GetString(utf8Bytes);
         }
 
-        public static string TrimAll(string text)
+        public static string ClearText(string text)
         {
             if (string.IsNullOrWhiteSpace(text))
                 return null;
 
+            //TODO: Unescape text
+            //text = HttpUtility.HtmlDecode(text);
+
+            // Fix text
+            text = text.
+                Replace(STR_NBSP, " ").
+                Replace("û", "ű").
+                Replace("õ", "ő");
+
+            //Multiline Trim
+            var middle = new Regex(REGEX_AUDIOBOOK);
             var front = new Regex(@"^\s+", RegexOptions.Multiline);
             var back = new Regex(@"\s+$", RegexOptions.Multiline);
             text = front.Replace(text, "");
+            text = middle.Replace(text, "");
             text = back.Replace(text, "");
             return text;
         }
@@ -48,29 +60,6 @@ namespace OszkConnector.Models
                 cc.Add(new KeyValuePair<string, string>(key, value?.Replace('+', ' ')));
             }
             return cc;
-        }
-
-        public static string ClearFullTitle(string text)
-        {
-            return text.
-                Replace(STR_AUDIOBOOK, "").
-                Replace(STR_NBSP, " ").
-                Trim();
-        }
-
-        public static string ToAuthor(string text)
-        {
-            if (text.Contains(":"))
-                return ClearFullTitle(text).Split(':')[0]?.Trim();
-            return null;
-        }
-
-        public static string ToTitle(string text)
-        {
-            if (text.Contains(":"))
-                return ClearFullTitle(text).Split(':')[1]?.Trim();
-            return text;
-
         }
 
         public static AudioBookTrack ConvertAudioTrackFrom(string text)
@@ -126,7 +115,7 @@ namespace OszkConnector.Models
                     var catalog = CatalogResolver.Resolve(url);
                     books.Add(new BookResult()
                     {
-                        FullTitle = MekConvert.ClearFullTitle(f.InnerText),
+                        FullTitle = MekConvert.ClearText(f.InnerText),
                         Id = catalog?.Id,
                         UrlId = catalog?.UrlId
                     });
@@ -150,20 +139,6 @@ namespace OszkConnector.Models
             {
                 book.Tags.Add(tag.InnerText);
             }
-            return book;
-        }
-
-        public static Book CreateBookFromContentsPage(string pageContent)
-        {
-            var book = new Book();
-            var document = new HtmlDocument();
-            document.Load(new StringReader(pageContent));
-            var root = document.DocumentNode;
-
-            book.Contents = TrimAll(root.SelectNodes("//tartalom").FirstOrDefault()?.InnerText);
-            book.Prologue = root.SelectNodes("//eloszo").FirstOrDefault()?.InnerText;
-            book.Epilogue = root.SelectNodes("//utoszo").FirstOrDefault()?.InnerText;
-            book.Summary = root.SelectNodes("//ismerteto").FirstOrDefault()?.InnerText;
             return book;
         }
     }
