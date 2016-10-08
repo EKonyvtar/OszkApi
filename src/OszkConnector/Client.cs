@@ -17,11 +17,11 @@ namespace OszkConnector
         {
             var uri = new Uri($"{MEK_ENDPOINT_URL}/katalog/kataluj.php3");
             var postData = $"szerint=cimsz&s1=dc_format+format_name&m1=MP3&muv1=and&s2=dc_creator_o+FamilyGivenName&m2={query}&muv2=or&s3=dc_title+subtitle&m3=&muv3=or&s4=dc_subject+keyword&m4=&muv4=or&s5=dc_subject+keyword&m5=&subid=&x=31&y=8&sind1=0&sind2=7&sind3=16&sind4=13&sind5=18&muv1index=0&muv2index=0&muv3index=0&muv4index=0&subid_check=&ekezet_check=&ekezet=ektelen";
-            var content = new FormUrlEncodedContent(MekConverter.ToKeyValuePair(postData));
+            var content = new FormUrlEncodedContent(MekConvert.ToKeyValuePair(postData));
 
             var response = await new HttpClient().PostAsync(uri, content);
-            var html = MekConverter.ToUtf8(await response.Content.ReadAsByteArrayAsync());
-            var books = MekConverter.ParseMekBookResultPage(html);
+            var html = MekConvert.ToUtf8(await response.Content.ReadAsByteArrayAsync());
+            var books = MekConvert.ParseMekBookResultPage(html);
             return books;
         }
 
@@ -29,8 +29,8 @@ namespace OszkConnector
         {
             var uri = new Uri($"{MEK_ENDPOINT_URL}/{urlId}/index.xml");
             var response = await new HttpClient().GetAsync(uri);
-            var html = MekConverter.ToUtf8(await response.Content.ReadAsByteArrayAsync());
-            var book = MekConverter.ParseMekBookIndex(html);
+            var html = MekConvert.ToUtf8(await response.Content.ReadAsByteArrayAsync());
+            var book = MekFactory.CreateBookFromIndex(html);
             return book;
         }
 
