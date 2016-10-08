@@ -13,10 +13,6 @@ namespace OszkConnector.Models
         private static string URL_MEK_ENDPOINT = "http://mek.oszk.hu/{0}";
 
         [DataMember]
-        public string Author { get; set; }
-        [DataMember]
-        public string Title { get; set; }
-        [DataMember]
         public string Id { get; set; }
 
         private string _urlId = null;
@@ -28,6 +24,11 @@ namespace OszkConnector.Models
         }
 
         private string _url = null;
+
+
+        [DataMember]
+        public string FullTitle { get; set; }
+
         [DataMember]
         public string Url
         {
@@ -48,15 +49,6 @@ namespace OszkConnector.Models
             {
                 _ThumbnailUrl = value;
             }
-        }
-
-
-        private string _fullTitle = null;
-        [DataMember]
-        public string FullTitle
-        {
-            get { return _fullTitle ?? $"{Author}: {Title}"; }
-            set { _fullTitle = value; }
         }
 
         public override string ToString()

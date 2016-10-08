@@ -127,8 +127,6 @@ namespace OszkConnector.Models
                     books.Add(new BookResult()
                     {
                         FullTitle = MekConvert.ClearFullTitle(f.InnerText),
-                        Title = MekConvert.ToTitle(f.InnerText),
-                        Author = MekConvert.ToAuthor(f.InnerText),
                         Id = catalog?.Id,
                         UrlId = catalog?.UrlId
                     });
