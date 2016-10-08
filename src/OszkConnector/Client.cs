@@ -25,19 +25,19 @@ namespace OszkConnector
             return books;
         }
 
-        public async Task<Book> GetBook(string UrlId)
+        public async Task<Book> GetBook(string urlId)
         {
-            return await GetBook(CatalogResolver.Resolve(UrlId).IntId);
+            var uri = new Uri($"{MEK_ENDPOINT_URL}/{urlId}/index.xml");
+            var response = await new HttpClient().GetAsync(uri);
+            var html = MekConverter.ToUtf8(await response.Content.ReadAsByteArrayAsync());
+            var book = MekConverter.ParseMekBookIndex(html);
+            return book;
         }
 
         public async Task<Book> GetBook(int id)
         {
             var urlId = CatalogResolver.Resolve(id).UrlId;
-            var uri = new Uri($"{MEK_ENDPOINT_URL}/{urlId}/index.xml");
-            var response = await new HttpClient().GetAsync(uri);
-            var html = MekConverter.ToUtf8(await response.Content.ReadAsByteArrayAsync());
-            var book = MekConverter.ParseMekBookIndex(html);
-
+            var book = await GetBook(CatalogResolver.Resolve(urlId).UrlId);
             return book;
         }
     }
