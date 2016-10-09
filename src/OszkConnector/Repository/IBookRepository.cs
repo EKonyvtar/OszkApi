@@ -1,11 +1,12 @@
-﻿using System;
+﻿using OszkConnector.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OszkConnector.Models
+namespace OszkConnector.Repository
 {
-    public interface IAudioBookRepository
+    public interface IBookRepository
     {
         IQueryable<BookResult> GetAll();
 

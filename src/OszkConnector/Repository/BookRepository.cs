@@ -1,16 +1,17 @@
-﻿using System;
+﻿using OszkConnector.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OszkConnector.Models
+namespace OszkConnector.Repository
 {
-    public class AudioBookRepository : IAudioBookRepository
+    public class BookRepository : IBookRepository
     {
         public IQueryable<BookResult> Find(string query = "")
         {
             var client = new Client();
-            return client.FindAudioBook(query).Result;
+            return client.FindBook(query).Result;
         }
 
         public Book Get(string Id)
