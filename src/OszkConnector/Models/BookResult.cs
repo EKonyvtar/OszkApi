@@ -11,7 +11,7 @@ namespace OszkConnector.Models
     {
         private static string URL_MEK_THUMBNAIL = "http://mek.oszk.hu/{0}/borito.jpg";
 
-        private static string _id = null;
+        private string _id = null;
         [DataMember]
         public string Id
         {

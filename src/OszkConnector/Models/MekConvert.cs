@@ -127,19 +127,5 @@ namespace OszkConnector.Models
             }
             return books.AsQueryable();
         }
-
-        public static Book ParseMekBookPage(string pageContent)
-        {
-            var book = new Book();
-            var document = new HtmlDocument();
-            document.Load(new StringReader(pageContent));
-            var docNode = document.DocumentNode;
-            //TODO:
-            foreach (var tag in docNode.SelectNodes("//meta[@name='dc.subject']"))
-            {
-                book.Tags.Add(tag.InnerText);
-            }
-            return book;
-        }
     }
 }

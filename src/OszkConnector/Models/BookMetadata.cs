@@ -17,7 +17,7 @@ namespace OszkConnector.Models
         public string Id { get; set; }
 
         [DataMember]
-        public string Uri { get { return $"/audiobook/{Id}"; } }
+        public string Uri { get { return $"/audiobooks/{Id}"; } }
 
 
         private string _mekUrl = null;
