@@ -7,12 +7,23 @@ using System.Threading.Tasks;
 namespace OszkConnector.Models
 {
     [DataContract]
-    public class Book : BookResult
+    public class Book
     {
-        [DataMember(EmitDefaultValue = false)]
-        public string Author { get; set; }
-        [DataMember(EmitDefaultValue = false)]
-        public string Title { get; set; }
+
+        private static string URL_MEK_THUMBNAIL = "http://mek.oszk.hu/{0}/borito.jpg";
+
+        private string _id = null;
+        [DataMember]
+        public string Id
+        {
+            get { return _id; }
+            set
+            {
+                _id = value;
+                Metadata.Id = value;
+            }
+        }
+
 
         private string _fullTitle = null;
         [DataMember(EmitDefaultValue = false)]
@@ -21,6 +32,39 @@ namespace OszkConnector.Models
             get { return _fullTitle ?? $"{Author}: {Title}"; }
             set { _fullTitle = value; }
         }
+
+        //TODO: eliminate UrlId
+        private string _urlId = null;
+
+        public string UrlId
+        {
+            get { return _urlId ?? $"{Id.Substring(0, 3)}00/{Id}"; }
+            set { _urlId = value; }
+        }
+
+        private Uri _ThumbnailUrl = null;
+        [DataMember]
+        public Uri ThumbnailUrl
+        {
+            get
+            {
+                return _ThumbnailUrl ?? new Uri(string.Format(URL_MEK_THUMBNAIL, UrlId));
+            }
+            set { _ThumbnailUrl = value; }
+        }
+
+        [DataMember(Name = "__metadata")]
+        public BookMetadata Metadata { get; set; }
+
+        public Book()
+        {
+            Metadata = new BookMetadata();
+        }
+
+        [DataMember(EmitDefaultValue = false)]
+        public string Author { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public string Title { get; set; }
 
         [DataMember(EmitDefaultValue = false)]
         public string Urn { get; set; }
@@ -59,8 +103,12 @@ namespace OszkConnector.Models
         public List<string> KeyWords { get; set; }
 
         [DataMember(EmitDefaultValue = false)]
-        public List<BookResult> Related { get; set; }
+        public List<Book> Related { get; set; }
 
+        public override string ToString()
+        {
+            return $"[{Id}] {FullTitle}";
+        }
 
         public void Merge(Book from)
         {

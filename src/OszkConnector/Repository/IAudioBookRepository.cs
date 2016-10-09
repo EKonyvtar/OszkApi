@@ -8,9 +8,9 @@ namespace OszkConnector.Repository
 {
     public interface IAudioBookRepository
     {
-        IQueryable<BookResult> GetAll();
+        IQueryable<Book> GetAll();
 
-        IQueryable<BookResult> Find(string query);
+        IQueryable<Book> Find(string query);
 
         Book Get(string Id);
     }
