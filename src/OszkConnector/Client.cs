@@ -27,7 +27,7 @@ namespace OszkConnector
 
         public async Task<IQueryable<BookResult>> FindBook(string query = "")
         {
-            return await MekCatalog.SearchAsync(query);
+            return await MekCatalog.SearchAsync(query, "MP3");
         }
 
         public async Task<Book> GetBook(string catalogId)
