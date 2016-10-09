@@ -51,7 +51,7 @@ namespace OszkConnector.Models
             return contributors;
         }
 
-        public static List<BookResult> BooksFromNode(HtmlNodeCollection nodeCollection)
+        public static List<Book> BooksFromNode(HtmlNodeCollection nodeCollection)
         {
             /*
             <dc_relation>
@@ -61,14 +61,14 @@ namespace OszkConnector.Models
                 </MEK>
             </dc_relation>
             */
-            var books = new List<BookResult>();
+            var books = new List<Book>();
             foreach (var node in nodeCollection)
                 try
                 {
                     var title = node.ChildNodes["mek"]?.ChildNodes["mek_name"]?.InnerText;
                     var url = node.ChildNodes["mek"]?.ChildNodes["mek_url"]?.InnerText;
                     var catalog = CatalogResolver.Resolve(url);
-                    books.Add(new BookResult()
+                    books.Add(new Book()
                     {
                         FullTitle = MekConvert.ClearText(title),
                         Id = catalog?.Id,

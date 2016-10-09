@@ -8,7 +8,7 @@ namespace OszkConnector.Repository
 {
     public class AudioBookRepository : IAudioBookRepository
     {
-        public IQueryable<BookResult> Find(string query = "")
+        public IQueryable<Book> Find(string query = "")
         {
             var client = new Client();
             return client.FindAudioBook(query).Result;
@@ -20,7 +20,7 @@ namespace OszkConnector.Repository
             return client.GetBook(Id).Result;
         }
 
-        public IQueryable<BookResult> GetAll()
+        public IQueryable<Book> GetAll()
         {
             return Find();
         }

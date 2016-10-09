@@ -17,7 +17,7 @@ namespace OszkApi.Controllers
         }
 
         [HttpGet()]
-        public IQueryable<BookResult> Get([FromQuery] string query = "")
+        public IQueryable<Book> Get([FromQuery] string query = "")
         {
             return _bookRepository.Find(query);
         }

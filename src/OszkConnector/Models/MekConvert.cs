@@ -100,9 +100,9 @@ namespace OszkConnector.Models
             return tracks;
         }
 
-        public static IQueryable<BookResult> ParseMekBookResultPage(string pageContent)
+        public static IQueryable<Book> ParseMekBookResultPage(string pageContent)
         {
-            var books = new List<BookResult>();
+            var books = new List<Book>();
 
             var document = new HtmlDocument();
             document.Load(new StringReader(pageContent));
@@ -113,7 +113,7 @@ namespace OszkConnector.Models
                 {
                     var url = f.ParentNode.ParentNode.SelectSingleNode("span").FirstChild.InnerText;
                     var catalog = CatalogResolver.Resolve(url);
-                    books.Add(new BookResult()
+                    books.Add(new Book()
                     {
                         FullTitle = MekConvert.ClearText(f.InnerText),
                         Id = catalog?.Id,

@@ -34,7 +34,7 @@ namespace OszkConnector
             return filter;
         }
 
-        public static async Task<IQueryable<BookResult>> SearchAsync(string query = "", string format = "")
+        public static async Task<IQueryable<Book>> SearchAsync(string query = "", string format = "")
         {
             var uri = new Uri($"{MEK_ENDPOINT_URL}/katalog/kataluj.php3");
             var filter = new List<KeyValuePair<string, string>>();
