@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OszkConnector.Models;
 using System.Linq;
+using OszkConnector.Repository;
 
 namespace OszkApi.Controllers
 {
