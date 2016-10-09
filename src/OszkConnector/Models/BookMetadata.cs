@@ -6,8 +6,27 @@ using System.Threading.Tasks;
 
 namespace OszkConnector.Models
 {
+    //TODO: fix this and move to api model with routes:
+    // https://docs.asp.net/en/latest/fundamentals/routing.html#url-generation-reference
+
+    [DataContract]
     public class BookMetadata
     {
-        public Uri Self { get; set; }
+        private static string URL_MEK_ENDPOINT = "http://mek.oszk.hu/{0}";
+
+        public string Id { get; set; }
+
+        [DataMember]
+        public string Uri { get { return $"/audiobook/{Id}"; } }
+
+
+        private string _mekUrl = null;
+        [DataMember]
+        public string MekUrl
+        {
+            get { return _mekUrl ?? string.Format(URL_MEK_ENDPOINT, CatalogResolver.Resolve(Id).UrlId); }
+            set { _mekUrl = value; }
+        }
+
     }
 }

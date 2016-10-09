@@ -18,7 +18,6 @@
     },
     "OszkApi": {
       "commandName": "Project",
-      "launchBrowser": true,
       "launchUrl": "http://localhost:5000/api/audiobooks",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
