@@ -31,8 +31,9 @@ namespace OszkApi
             // Add framework services.
             services.AddMvc();
 
-            // Inject MEK-book repository 
-            services.AddSingleton<IBookRepository, AudioBookRepository>();
+            // Inject MEK-book repositories
+            services.AddSingleton<IBookRepository, BookRepository>();
+            services.AddSingleton<IAudioBookRepository, AudioBookRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

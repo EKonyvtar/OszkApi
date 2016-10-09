@@ -106,9 +106,9 @@ namespace OszkConnector.Models
             var url = StringFromNode(doc.SelectNodes("//mek2/dc_identifier/url"));
             var catalog = CatalogResolver.Resolve(url);
 
-            book.Url = url;
             book.Id = catalog?.Id;
             book.UrlId = catalog?.UrlId;
+            book.Metadata.MekUrl = url;
             book.MekId = StringFromNode(doc.SelectNodes("//mek2/dc_identifier/mekid"));
             book.Urn = StringFromNode(doc.SelectNodes("//mek2/dc_identifier/urn"));
 

@@ -6,25 +6,25 @@ using System.Linq;
 namespace OszkApi.Controllers
 {
     [Route("api/[controller]")]
-    public class AudioBooksController : Controller
+    public class BooksController : Controller
     {
-        private IAudioBookRepository _audioBookRepository { get; set; }
+        private IBookRepository _bookRepository { get; set; }
 
-        public AudioBooksController(IAudioBookRepository audioBookRepository)
+        public BooksController(IBookRepository bookRepository)
         {
-            _audioBookRepository = audioBookRepository;
+            _bookRepository = bookRepository;
         }
 
         [HttpGet()]
         public IQueryable<BookResult> Get([FromQuery] string query = "")
         {
-            return _audioBookRepository.Find(query);
+            return _bookRepository.Find(query);
         }
 
-        [HttpGet("{id}", Name = "GetAudioBook")]
+        [HttpGet("{id}", Name = "GetBook")]
         public IActionResult GetByCatalogId(string id)
         {
-            var book = _audioBookRepository.Get(id);
+            var book = _bookRepository.Get(id);
             if (book == null)
                 return NotFound();
 
