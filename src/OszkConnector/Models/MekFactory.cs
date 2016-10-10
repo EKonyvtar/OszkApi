@@ -154,14 +154,14 @@ namespace OszkConnector.Models
             var document = new HtmlDocument();
             document.Load(new StringReader(html));
 
-            var converterRegex = new Regex(@"((\d+)?.+\.(mp3))?\s?-\s?(.+)\s?(\(.+\))");
+            var trackRegex = new Regex(@"((\d+)?.+\.(mp3))?\s?-\s?(.+)\s?(\(.+\))");
             //Eg: "01_bojgas.mp3 - Itt kezdődik (10:53 min. 7,8 Mbyte)"
             //     2     1    3           4                   5
 
             foreach (var li in document.DocumentNode.SelectNodes("//li"))
                 try
                 {
-                    var match = converterRegex.Match(li.InnerText);
+                    var match = trackRegex.Match(li.InnerText);
                     if (match.Success)
                         audioBook.Tracks.Add(new AudioBookTrack()
                         {
