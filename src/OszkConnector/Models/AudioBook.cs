@@ -14,8 +14,14 @@ namespace OszkConnector.Models
 
         public string ToM3UPlayList()
         {
-            //TODO: implement
-            return null;
+            var content = "";
+            content += "#EXTM3U\n";
+            foreach (var track in Tracks)
+            {
+                content += $"#EXTINF:0,{FullTitle} - {track.Title}\n";
+                content += $"{track.FileUrl}\n";
+            }
+            return content;
         }
     }
 }

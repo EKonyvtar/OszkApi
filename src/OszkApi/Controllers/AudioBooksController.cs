@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using OszkConnector.Models;
 using System.Linq;
 using OszkConnector.Repository;
+using System.Text;
 
 namespace OszkApi.Controllers
 {
@@ -30,6 +31,21 @@ namespace OszkApi.Controllers
                 return NotFound();
 
             return new ObjectResult(audiobook);
+        }
+
+
+        [HttpGet("{id}/m3u", Name = "DownloadAudioBookPlayList")]
+        public FileResult GetAudioBookPlayList(string id)
+        {
+            var audiobook = _audioBookRepository.Get(id);
+            HttpContext.Response.ContentType = "application/vnd.apple.mpegurl";
+            FileContentResult playlist = new FileContentResult(
+                Encoding.UTF8.GetBytes(audiobook.ToM3UPlayList()), "application/vnd.apple.mpegurl")
+            {
+                FileDownloadName = $"{id}.m3u"
+            };
+
+            return playlist;
         }
     }
 }

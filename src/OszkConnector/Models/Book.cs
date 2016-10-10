@@ -13,7 +13,7 @@ namespace OszkConnector.Models
         private static string URL_MEK_THUMBNAIL = "http://mek.oszk.hu/{0}/borito.jpg";
 
         private string _id = null;
-        [DataMember]
+        [DataMember(Order = 0)]
         public string Id
         {
             get { return _id; }
@@ -26,7 +26,7 @@ namespace OszkConnector.Models
 
 
         private string _fullTitle = null;
-        [DataMember(EmitDefaultValue = false)]
+        [DataMember(Order = 1, EmitDefaultValue = false)]
         public new string FullTitle
         {
             get { return _fullTitle ?? $"{Author}: {Title}"; }
