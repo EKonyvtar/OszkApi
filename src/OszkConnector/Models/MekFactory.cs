@@ -146,26 +146,6 @@ namespace OszkConnector.Models
             return book;
         }
 
-        private static AudioBookTrack CreateAudioBookTrackFromLiText(string text)
-        {
-            //Eg: "01_bojgas.mp3 - Itt kezdődik (10:53 min. 7,8 Mbyte)"
-            //     2     1    3           4                   5
-
-            var converterRegex = new Regex(@"((\d+)?.+\.(mp3))?\s?-\s?(.+)\s?(\(.+\))");
-            var match = converterRegex.Match(text);
-
-            if (match != null)
-                return new AudioBookTrack()
-                {
-                    Track = Convert.ToInt32(match.Groups[2].Value),
-                    FileName = match.Groups[1].Value,
-                    Title = match.Groups[4].Value
-                };
-
-
-            return null;
-        }
-
         public static AudioBook CreateAudioBookFromMP3Page(string html)
         {
             var audioBook = new AudioBook();
@@ -173,10 +153,22 @@ namespace OszkConnector.Models
 
             var document = new HtmlDocument();
             document.Load(new StringReader(html));
+
+            var converterRegex = new Regex(@"((\d+)?.+\.(mp3))?\s?-\s?(.+)\s?(\(.+\))");
+            //Eg: "01_bojgas.mp3 - Itt kezdődik (10:53 min. 7,8 Mbyte)"
+            //     2     1    3           4                   5
+
             foreach (var li in document.DocumentNode.SelectNodes("//li"))
                 try
                 {
-                    audioBook.Tracks.Add(MekFactory.CreateAudioBookTrackFromLiText(li.InnerText));
+                    var match = converterRegex.Match(li.InnerText);
+                    if (match.Success)
+                        audioBook.Tracks.Add(new AudioBookTrack()
+                        {
+                            Track = Convert.ToInt32(match.Groups[2].Value),
+                            FileName = match.Groups[1].Value,
+                            Title = match.Groups[4].Value
+                        });
                 }
                 catch
                 {
