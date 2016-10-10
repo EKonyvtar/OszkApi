@@ -23,17 +23,7 @@ namespace OszkApi.Controllers
         }
 
         [HttpGet("{id}", Name = "GetAudioBook")]
-        public IActionResult GetByCatalogId(string id)
-        {
-            var book = _audioBookRepository.Get(id);
-            if (book == null)
-                return NotFound();
-
-            return new ObjectResult(book);
-        }
-
-        [HttpGet("{id}/tracks", Name = "GetAudioBookWithTracks")]
-        public IActionResult GetAudioBookTrackList(string id)
+        public IActionResult GetAudioBook(string id)
         {
             var book = _audioBookRepository.Get(id);
             if (book == null)

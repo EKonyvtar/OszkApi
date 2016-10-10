@@ -37,6 +37,18 @@ namespace Tests
             Assert.Equal(book, book3);
         }
 
+        public async void GetAudioBook()
+        {
+            var client = new Client();
+            var audiobook = await client.GetAudioBook("02900/02965");
+            AssertBook(audiobook);
+
+            Assert.NotNull(audiobook.Tracks);
+            Assert.NotEmpty(audiobook.Tracks);
+
+        }
+
+
         public void AssertBook(Book book)
         {
             Assert.NotNull(book);

@@ -12,6 +12,6 @@ namespace OszkConnector.Repository
 
         IQueryable<Book> Find(string query);
 
-        Book Get(string Id);
+        AudioBook Get(string Id);
     }
 }
