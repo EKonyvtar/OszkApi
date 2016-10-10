@@ -18,7 +18,7 @@ namespace OszkConnector.Models
             content += "#EXTM3U\n";
             foreach (var track in Tracks)
             {
-                content += $"#EXTINF:0,{FullTitle} - {track.Title}\n";
+                content += $"#EXTINF:0,{FullTitle ?? "OSzK"} - {track.Title}\n";
                 content += $"{track.FileUrl}\n";
             }
             return content;
