@@ -24,7 +24,7 @@ namespace OszkConnector.Models
         [DataMember]
         public string MekUrl
         {
-            get { return _mekUrl ?? string.Format(URL_MEK_ENDPOINT, CatalogResolver.Resolve(Id).UrlId); }
+            get { return _mekUrl ?? string.Format(URL_MEK_ENDPOINT, CatalogResolver.Resolve(Id)?.UrlId); }
             set { _mekUrl = value; }
         }
 

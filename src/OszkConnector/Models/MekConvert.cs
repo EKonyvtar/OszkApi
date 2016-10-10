@@ -38,6 +38,7 @@ namespace OszkConnector.Models
             text = text.
                 Replace(STR_NBSP, " ").
                 Replace("û", "ű").
+                Replace("Õ", "Ő").
                 Replace("õ", "ő");
 
             //Multiline Trim
