@@ -166,6 +166,7 @@ namespace OszkConnector.Models
                         audioBook.Tracks.Add(new AudioBookTrack()
                         {
                             FileName = match.Groups[1].Value,
+                            FileUrl = new Uri($"{url}{match.Groups[1].Value}"),
                             Title = match.Groups[4].Value
                         });
                 }
