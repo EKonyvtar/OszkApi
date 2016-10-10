@@ -31,5 +31,15 @@ namespace OszkApi.Controllers
 
             return new ObjectResult(book);
         }
+
+        [HttpGet("{id}/tracks", Name = "GetAudioBookTracks")]
+        public IActionResult GetAUdioBookTrackList(string id)
+        {
+            var book = _audioBookRepository.Get(id);
+            if (book == null)
+                return NotFound();
+
+            return new ObjectResult(book);
+        }
     }
 }

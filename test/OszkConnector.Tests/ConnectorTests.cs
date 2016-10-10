@@ -21,22 +21,22 @@ namespace Tests
         }
 
         [Fact]
-        public async void GetAudioBookByUrlId()
+        public async void GetBook()
         {
             var client = new Client();
             var book = await client.GetBook("02900/02965");
-            Assert.NotNull(book);
-            Assert.NotEmpty(book.FullTitle);
-            Assert.NotEmpty(book.Author);
-            Assert.NotEmpty(book.Title);
+            AssertBook(book);
+
+            var book2 = await client.GetBook(2965);
+            AssertBook(book2);
+
+            Assert.Equal(book, book2);
         }
 
-        [Fact]
-        public async void GetAudioBookById()
+        public void AssertBook(Book book)
         {
-            var client = new Client();
-            var book = await client.GetBook(2965);
             Assert.NotNull(book);
+            Assert.NotEmpty(book.Id);
             Assert.NotEmpty(book.FullTitle);
             Assert.NotEmpty(book.Author);
             Assert.NotEmpty(book.Title);

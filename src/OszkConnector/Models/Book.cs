@@ -110,6 +110,22 @@ namespace OszkConnector.Models
             return $"[{Id}] {FullTitle}";
         }
 
+        public override bool Equals(object other)
+        {
+            try
+            {
+                var otherBook = (Book)other;
+                return (
+                    FullTitle == otherBook.FullTitle &&
+                    Id == otherBook.Id
+                    );
+            }
+            catch
+            {
+                //TODO: logging
+            }
+            return false;
+        }
         public void Merge(Book from)
         {
             //TODO:
