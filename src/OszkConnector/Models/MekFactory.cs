@@ -163,12 +163,15 @@ namespace OszkConnector.Models
                 {
                     var match = trackRegex.Match(li.InnerText);
                     if (match.Success && !string.IsNullOrEmpty(match.Groups[1].Value))
+                    {
+                        var fileName = MekConvert.Trim(match.Groups[1].Value);
                         audioBook.Tracks.Add(new AudioBookTrack()
                         {
-                            FileName = match.Groups[1].Value,
-                            FileUrl = new Uri($"{url}{match.Groups[1].Value}"),
-                            Title = match.Groups[4].Value
+                            FileName = fileName,
+                            FileUrl = new Uri($"{url}{fileName}"),
+                            Title = MekConvert.ClearText(match.Groups[4].Value)
                         });
+                    }
                 }
                 catch
                 {
