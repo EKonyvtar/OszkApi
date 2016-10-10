@@ -14,10 +14,10 @@ namespace OszkConnector.Repository
             return client.FindAudioBook(query).Result;
         }
 
-        public Book Get(string Id)
+        public AudioBook Get(string Id)
         {
             var client = new Client();
-            return client.GetBook(Id).Result;
+            return client.GetAudioBook(Id).Result;
         }
 
         public IQueryable<Book> GetAll()
