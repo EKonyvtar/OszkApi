@@ -38,7 +38,7 @@ namespace OszkConnector.Models
 
         public string UrlId
         {
-            get { return _urlId ?? $"{Id.Substring(0, 3)}00/{Id}"; }
+            get { return _urlId ?? $"{Id?.Substring(0, 3)}00/{Id}"; }
             set { _urlId = value; }
         }
 

@@ -43,10 +43,10 @@ namespace OszkConnector
         {
 
             var urlId = CatalogResolver.Resolve(catalogId).UrlId;
-            var uri = new Uri($"{MEK_ENDPOINT_URL}/{urlId}/mp3/");
-            var response = await new HttpClient().GetAsync(uri);
+            var url = $"{MEK_ENDPOINT_URL}/{urlId}/mp3/";
+            var response = await new HttpClient().GetAsync(new Uri(url));
             var html = MekConvert.ToUtf8(await response.Content.ReadAsByteArrayAsync());
-            var audioBook = MekFactory.CreateAudioBookFromMP3Page(html);
+            var audioBook = MekFactory.CreateAudioBookFromMP3Page(url, html);
             //TODO: Enrich With Book contents from cache
 
             return audioBook;

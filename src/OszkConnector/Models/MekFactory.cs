@@ -146,7 +146,7 @@ namespace OszkConnector.Models
             return book;
         }
 
-        public static AudioBook CreateAudioBookFromMP3Page(string html)
+        public static AudioBook CreateAudioBookFromMP3Page(string url, string html)
         {
             var audioBook = new AudioBook();
             audioBook.Tracks = new List<AudioBookTrack>();
@@ -154,7 +154,6 @@ namespace OszkConnector.Models
             var document = new HtmlDocument();
             document.Load(new StringReader(html));
 
-            var url = StringFromNode(document.DocumentNode.SelectNodes("//a[contains(@href,'mek')]"));
             var trackRegex = new Regex(@"((\d+)?.+\.(mp3))?\s?-\s?(.+)\s?(\(.+\))");
             //Eg: "01_bojgas.mp3 - Itt kezdődik (10:53 min. 7,8 Mbyte)"
             //     2     1    3           4                   5
@@ -166,7 +165,6 @@ namespace OszkConnector.Models
                     if (match.Success && !string.IsNullOrEmpty(match.Groups[1].Value))
                         audioBook.Tracks.Add(new AudioBookTrack()
                         {
-                            Track = match.Groups[2].Value,
                             FileName = match.Groups[1].Value,
                             Title = match.Groups[4].Value
                         });
@@ -177,7 +175,7 @@ namespace OszkConnector.Models
                 }
 
             var catalog = CatalogResolver.Resolve(url);
-            audioBook.Id = catalog.Id;
+            audioBook.Id = catalog?.Id;
             return audioBook;
         }
 
