@@ -74,8 +74,7 @@ namespace OszkConnector
             var content = new FormUrlEncodedContent(filter);
             var response = await new HttpClient().PostAsync(uri, content);
             var html = MekConvert.ToUtf8(await response.Content.ReadAsByteArrayAsync());
-            var books = MekConvert.ParseMekBookResultPage(html);
-            return books;
+            return MekFactory.CreateBookFromResultPage(html);
         }
 
     }

@@ -27,10 +27,14 @@ namespace Tests
             var book = await client.GetBook("02900/02965");
             AssertBook(book);
 
-            var book2 = await client.GetBook(2965);
+            var book2 = await client.GetBook("2965");
             AssertBook(book2);
 
+            var book3 = await client.GetBook("MEK-2965");
+            AssertBook(book3);
+
             Assert.Equal(book, book2);
+            Assert.Equal(book, book3);
         }
 
         public void AssertBook(Book book)
