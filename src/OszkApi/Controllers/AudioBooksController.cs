@@ -25,11 +25,11 @@ namespace OszkApi.Controllers
         [HttpGet("{id}", Name = "GetAudioBook")]
         public IActionResult GetAudioBook(string id)
         {
-            var book = _audioBookRepository.Get(id);
-            if (book == null)
+            var audiobook = _audioBookRepository.Get(id);
+            if (audiobook == null)
                 return NotFound();
 
-            return new ObjectResult(book);
+            return new ObjectResult(audiobook);
         }
     }
 }

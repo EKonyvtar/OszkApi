@@ -7,7 +7,7 @@ namespace OszkConnector.Models
 {
     public class AudioBookTrack
     {
-        public int Track { get; set; }
+        public string Track { get; set; }
         public string FileName { get; set; }
 
         public Uri FileUrl { get; set; }

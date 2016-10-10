@@ -126,6 +126,7 @@ namespace OszkConnector.Models
             }
             return false;
         }
+
         public void Merge(Book from)
         {
             //TODO:
