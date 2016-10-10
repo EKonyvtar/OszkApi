@@ -3,17 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace OszkConnector.Models
 {
     public class MekFactory
     {
-        public static string StringFromNode(HtmlNodeCollection nodeCollection, string nodeName = null)
+        private static string StringFromNode(HtmlNodeCollection nodeCollection, string nodeName = null)
         {
             return StringListFromNode(nodeCollection, nodeName)?.FirstOrDefault();
         }
-        public static List<string> StringListFromNode(HtmlNodeCollection nodeCollection, string nodeName = null)
+        private static List<string> StringListFromNode(HtmlNodeCollection nodeCollection, string nodeName = null)
         {
             if (nodeCollection == null)
                 return null;
@@ -30,7 +31,7 @@ namespace OszkConnector.Models
             }
             return strings;
         }
-        public static List<Contributor> ContributorsFromNode(HtmlNodeCollection nodeCollection)
+        private static List<Contributor> ContributorsFromNode(HtmlNodeCollection nodeCollection)
         {
             var contributors = new List<Contributor>();
             foreach (var node in nodeCollection)
@@ -51,7 +52,7 @@ namespace OszkConnector.Models
             return contributors;
         }
 
-        public static List<Book> BooksFromNode(HtmlNodeCollection nodeCollection)
+        private static List<Book> BooksFromNode(HtmlNodeCollection nodeCollection)
         {
             /*
             <dc_relation>
@@ -143,6 +144,72 @@ namespace OszkConnector.Models
             book.Related = BooksFromNode(doc.SelectNodes("//mek2/dc_relation"));
 
             return book;
+        }
+
+        private static AudioBookTrack CreateAudioBookTrackFromLiText(string text)
+        {
+            //Eg: "01_bojgas.mp3 - Itt kezdődik (10:53 min. 7,8 Mbyte)"
+            //     2     1    3           4                   5
+
+            var converterRegex = new Regex(@"((\d+)?.+\.(mp3))?\s?-\s?(.+)\s?(\(.+\))");
+            var match = converterRegex.Match(text);
+
+            if (match != null)
+                return new AudioBookTrack()
+                {
+                    Track = Convert.ToInt32(match.Groups[2].Value),
+                    FileName = match.Groups[1].Value,
+                    Title = match.Groups[4].Value
+                };
+
+
+            return null;
+        }
+
+        public static IEnumerable<AudioBookTrack> CreateAudioTrackListFromMP3Page(string html)
+        {
+            var tracks = new List<AudioBookTrack>();
+
+            var document = new HtmlDocument();
+            document.Load(new StringReader(html));
+            foreach (var li in document.DocumentNode.SelectNodes("//li"))
+                try
+                {
+                    tracks.Add(MekFactory.CreateAudioBookTrackFromLiText(li.InnerText));
+                }
+                catch
+                {
+                    //TODO: log parse error
+                }
+            return tracks;
+        }
+
+        public static IQueryable<Book> CreateBookFromResultPage(string pageContent)
+        {
+            var books = new List<Book>();
+
+            var document = new HtmlDocument();
+            document.Load(new StringReader(pageContent));
+            var docNode = document.DocumentNode;
+            foreach (var f in docNode.SelectNodes("//a[contains(@href,'Javascript')]"))
+            {
+                try
+                {
+                    var url = f.ParentNode.ParentNode.SelectSingleNode("span").FirstChild.InnerText;
+                    var catalog = CatalogResolver.Resolve(url);
+                    books.Add(new Book()
+                    {
+                        FullTitle = MekConvert.ClearText(f.InnerText),
+                        Id = catalog?.Id,
+                        UrlId = catalog?.UrlId
+                    });
+                }
+                catch (Exception ex)
+                {
+                    //TODO: log error
+                }
+            }
+            return books.AsQueryable();
         }
     }
 }

@@ -21,7 +21,7 @@ namespace OszkConnector
 
             var response = await new HttpClient().PostAsync(uri, content);
             var html = MekConvert.ToUtf8(await response.Content.ReadAsByteArrayAsync());
-            var books = MekConvert.ParseMekBookResultPage(html);
+            var books = MekFactory.CreateBookFromResultPage(html);
             return books;
         }
 
@@ -36,14 +36,17 @@ namespace OszkConnector
             var uri = new Uri($"{MEK_ENDPOINT_URL}/{urlId}/index.xml");
             var response = await new HttpClient().GetAsync(uri);
             var html = MekConvert.ToUtf8(await response.Content.ReadAsByteArrayAsync());
-            var book = MekFactory.CreateBookFromIndex(html);
-            return book;
+            return MekFactory.CreateBookFromIndex(html);
         }
 
-        public async Task<Book> GetBook(int id)
+        public async Task<IEnumerable<AudioBookTrack>> GetAudioBookTrack(string catalogId)
         {
-            var book = await GetBook(CatalogResolver.Resolve(id).UrlId);
-            return book;
+
+            var urlId = CatalogResolver.Resolve(catalogId).UrlId;
+            var uri = new Uri($"{MEK_ENDPOINT_URL}/{urlId}/mp3/");
+            var response = await new HttpClient().GetAsync(uri);
+            var html = MekConvert.ToUtf8(await response.Content.ReadAsByteArrayAsync());
+            return MekFactory.CreateAudioTrackListFromMP3Page(html);
         }
     }
 }

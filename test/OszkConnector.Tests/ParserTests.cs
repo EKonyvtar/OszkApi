@@ -50,7 +50,7 @@ namespace Tests
             string pagecontent = File.ReadAllText(@"./fixtures/mek_page_mp3.html");
             Assert.NotEmpty(pagecontent);
 
-            var tracks = MekConvert.ParseMekMP3Page(pagecontent);
+            var tracks = MekFactory.CreateAudioTrackListFromMP3Page(pagecontent);
             Assert.NotNull(tracks);
             Assert.NotEmpty(tracks);
 
