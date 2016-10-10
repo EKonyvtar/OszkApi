@@ -26,6 +26,18 @@ namespace OszkConnector.Models
             return utf8.GetString(utf8Bytes);
         }
 
+        public static string Trim(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text)) return null;
+
+            //Multiline Trim
+            var front = new Regex(@"^\s+", RegexOptions.Multiline);
+            var back = new Regex(@"\s+$", RegexOptions.Multiline);
+            text = front.Replace(text, "");
+            text = back.Replace(text, "");
+            return text;
+        }
+
         public static string ClearText(string text)
         {
             if (string.IsNullOrWhiteSpace(text))
@@ -43,11 +55,8 @@ namespace OszkConnector.Models
 
             //Multiline Trim
             var middle = new Regex(REGEX_AUDIOBOOK);
-            var front = new Regex(@"^\s+", RegexOptions.Multiline);
-            var back = new Regex(@"\s+$", RegexOptions.Multiline);
-            text = front.Replace(text, "");
             text = middle.Replace(text, "");
-            text = back.Replace(text, "");
+            text = Trim(text);
             return text;
         }
 

@@ -14,7 +14,11 @@ namespace Tests
         [Fact]
         public void MultilineTrim()
         {
-            //TODO
+            var sample = "\n\n\rFirstLine\r\n\tSecondLine\n  ThirdLine  \n FourthLine    \nFifth Line\n";
+            var expected = "FirstLine\nSecondLine\nThirdLine\nFourthLine\nFifth Line";
+            var trimmed = MekConvert.Trim(sample);
+
+            Assert.Equal(expected, trimmed);
         }
 
         [Fact]
