@@ -7,7 +7,12 @@ namespace OszkConnector.Models
 {
     public class AudioBook : Book
     {
-        public string PlayListFile { get; set; }
         public List<AudioBookTrack> Tracks { get; set; }
+
+        public string ToM3UPlayList()
+        {
+            //TODO: implement
+            return null;
+        }
     }
 }

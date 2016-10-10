@@ -166,25 +166,26 @@ namespace OszkConnector.Models
             return null;
         }
 
-        public static IEnumerable<AudioBookTrack> CreateAudioTrackListFromMP3Page(string html)
+        public static AudioBook CreateAudioBookFromMP3Page(string html)
         {
-            var tracks = new List<AudioBookTrack>();
+            var audioBook = new AudioBook();
+            audioBook.Tracks = new List<AudioBookTrack>();
 
             var document = new HtmlDocument();
             document.Load(new StringReader(html));
             foreach (var li in document.DocumentNode.SelectNodes("//li"))
                 try
                 {
-                    tracks.Add(MekFactory.CreateAudioBookTrackFromLiText(li.InnerText));
+                    audioBook.Tracks.Add(MekFactory.CreateAudioBookTrackFromLiText(li.InnerText));
                 }
                 catch
                 {
                     //TODO: log parse error
                 }
-            return tracks;
+            return audioBook;
         }
 
-        public static IQueryable<Book> CreateBookFromResultPage(string pageContent)
+        public static IQueryable<Book> CreateBookListFromResultPage(string pageContent)
         {
             var books = new List<Book>();
 

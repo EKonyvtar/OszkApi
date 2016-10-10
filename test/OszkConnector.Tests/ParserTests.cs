@@ -50,12 +50,12 @@ namespace Tests
             string pagecontent = File.ReadAllText(@"./fixtures/mek_page_mp3.html");
             Assert.NotEmpty(pagecontent);
 
-            var tracks = MekFactory.CreateAudioTrackListFromMP3Page(pagecontent);
-            Assert.NotNull(tracks);
-            Assert.NotEmpty(tracks);
+            var audioBook = MekFactory.CreateAudioBookFromMP3Page(pagecontent);
+            Assert.NotNull(audioBook.Tracks);
+            Assert.NotEmpty(audioBook.Tracks);
 
             //All tracks should be parsed
-            Assert.Equal(tracks.Count(), 26);
+            Assert.Equal(audioBook.Tracks.Count(), 26);
         }
 
         [Fact]
