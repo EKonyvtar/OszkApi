@@ -1,25 +1,24 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9EF1A3AE-D558-493F-8AFF-B127F961E567}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2AE49E53-9C5C-4B85-860C-0225BD41F9CE}"
 	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "OszkApi", "src\OszkApi\OszkApi.xproj", "{7CD0E130-9A33-43A5-BB9D-2EAA4B4FE2DF}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "OszkConnector", "src\OszkConnector\OszkConnector.xproj", "{0D14E647-0C96-429B-9E06-79A262F64A2B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{38802111-B3AD-410F-AC3D-F668BFC9DB5C}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "OszkConnector.Tests", "test\OszkConnector.Tests\OszkConnector.Tests.xproj", "{322A7BC2-461D-4ED2-AA12-6F17C2DB837B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OszkApi", "src\OszkApi\OszkApi.csproj", "{7CD0E130-9A33-43A5-BB9D-2EAA4B4FE2DF}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "OszkApiExamples", "src\OszkApiExamples\OszkApiExamples.xproj", "{9973D642-1DED-4F30-AA34-2FEAA7F17BD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OszkConnector", "src\OszkConnector\OszkConnector.csproj", "{0D14E647-0C96-429B-9E06-79A262F64A2B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OszkConnector.Tests", "test\OszkConnector.Tests\OszkConnector.Tests.csproj", "{322A7BC2-461D-4ED2-AA12-6F17C2DB837B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OszkApiExamples", "src\OszkApiExamples\OszkApiExamples.csproj", "{9973D642-1DED-4F30-AA34-2FEAA7F17BD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
