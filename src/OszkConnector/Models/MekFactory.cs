@@ -146,6 +146,10 @@ namespace OszkConnector.Models
             return book;
         }
 
+        public static AudioBookTrack CreateAudioBookTrack(string bookLine)
+        {
+            return null;
+        }
         public static AudioBook CreateAudioBookFromMP3Page(string url, string html)
         {
             var audioBook = new AudioBook();
@@ -154,9 +158,9 @@ namespace OszkConnector.Models
             var document = new HtmlDocument();
             document.Load(new StringReader(html));
 
-            var trackRegex = new Regex(@"((\d+)?.+\.(mp3))?\s?-\s?(.+)\s?(\(.+\))");
+            var trackRegex = new Regex(@"((\d+)?.+\.(mp3))?\s?-\s?(.+)");
             //Eg: "01_bojgas.mp3 - Itt kezdődik (10:53 min. 7,8 Mbyte)"
-            //     2     1    3           4                   5
+            //     2     1    3           4                
 
             foreach (var li in document.DocumentNode.SelectNodes("//li"))
                 try
@@ -165,12 +169,15 @@ namespace OszkConnector.Models
                     if (match.Success && !string.IsNullOrEmpty(match.Groups[1].Value))
                     {
                         var fileName = MekConvert.Trim(match.Groups[1].Value);
-                        audioBook.Tracks.Add(new AudioBookTrack()
+                        var audioBookTrack = new AudioBookTrack() //TODO: parser
                         {
                             FileName = fileName,
                             FileUrl = new Uri($"{url}{fileName}"),
                             Title = MekConvert.ClearText(match.Groups[4].Value)
-                        });
+                        };
+                        
+                        var title = match.Groups[4].Value;
+                        audioBook.Tracks.Add(audioBookTrack);
                     }
                 }
                 catch
