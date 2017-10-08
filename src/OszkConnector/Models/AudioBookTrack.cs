@@ -19,7 +19,7 @@ namespace OszkConnector.Models
         public string Title { get; set; }
 
         [DataMember(EmitDefaultValue = false)]
-        public double LengthTotalSeconds { get; set; }
+        public int LengthTotalSeconds { get; set; }
 
         [DataMember(EmitDefaultValue = false)]
         public string Length { get; set; }
@@ -31,7 +31,7 @@ namespace OszkConnector.Models
 
         public override string ToString()
         {
-            return $"{FileName} - {Title}";
+            return $"{FileName} - {Title} ({Length}, {Size})";
         }
     }
 }
