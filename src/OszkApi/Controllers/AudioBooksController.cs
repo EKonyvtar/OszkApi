@@ -37,10 +37,11 @@ namespace OszkApi.Controllers
         [HttpGet("{id}/m3u", Name = "DownloadAudioBookPlayList")]
         public FileResult GetAudioBookPlayList(string id)
         {
+            var contentType = "application/vnd.apple.mpegurl";
             var audiobook = _audioBookRepository.Get(id);
-            HttpContext.Response.ContentType = "application/vnd.apple.mpegurl";
+            HttpContext.Response.ContentType = contentType;
             FileContentResult playlist = new FileContentResult(
-                Encoding.UTF8.GetBytes(audiobook.ToM3UPlayList()), "application/vnd.apple.mpegurl")
+                Encoding.UTF8.GetBytes(audiobook.ToM3UPlayList()), contentType)
             {
                 FileDownloadName = $"{id}.m3u"
             };
