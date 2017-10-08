@@ -1,6 +1,7 @@
 ﻿using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -172,12 +173,32 @@ namespace OszkConnector.Models
             }
 
             //Size strip
-            var sizeMatch = new Regex(@"((\d+[.,]?\d+)\s*([MmKk](ega|ilo)?[Bb](yte|ajt|ájt)?))").Match(track.Title);
-            //Eg: 7,8 Mbyte"
+            var sizeMatch = new Regex(@"((\d+[.,]?\d+)\s*([MmKk](ega|ilo)?[Bb](yte|ajt|ájt)?))").Match(track.MetaData);
+            //Eg: 7,8 Mbyte
             //    2     3
             if (sizeMatch.Success && !string.IsNullOrEmpty(sizeMatch.Groups[1].Value))
                 track.Size = sizeMatch.Groups[1].Value.Trim();
-            
+
+            //Length strip
+            var lengthMatch = new Regex(@"(((\d+):)?(\d+):+(\d+))\s*(min|perc)").Match(track.MetaData);
+            //Eg: 0:10:53 perc
+            //    3  4  5
+            if (lengthMatch.Success && !string.IsNullOrEmpty(lengthMatch.Groups[1].Value)) {
+                track.Length = lengthMatch.Groups[1].Value.Trim();
+                var timeSpan = new TimeSpan();
+                try
+                {
+                    //TimeSpan.TryParseExact(track.Length, "t", new CultureInfo("hu-HU"), out timeSpan);
+                    timeSpan = new TimeSpan(
+                        Convert.ToInt32("0" + lengthMatch.Groups[3].Value),
+                        Convert.ToInt32("0" + lengthMatch.Groups[4].Value),
+                        Convert.ToInt32("0" + lengthMatch.Groups[5].Value)
+                    );
+                }
+                finally {
+                    track.LengthTotalSeconds = timeSpan.TotalSeconds;
+                }
+            }
             return track;
         }
         public static AudioBook CreateAudioBookFromMP3Page(string url, string html)
