@@ -146,9 +146,39 @@ namespace OszkConnector.Models
             return book;
         }
 
-        public static AudioBookTrack CreateAudioBookTrack(string bookLine)
+        public static AudioBookTrack CreateAudioBookTrack(string url, string trackLine)
         {
-            return null;
+            var track = new AudioBookTrack();
+
+            // Filename and title match
+            var basicMatch = new Regex(@"((\d+)?.+\.(mp3))?\s?-\s?(.+)").Match(trackLine);
+            //Eg: "01_bojgas.mp3 - Itt kezdődik (10:53 min. 7,8 Mbyte)"
+            //     2     1    3           4
+            if (basicMatch.Success && !string.IsNullOrEmpty(basicMatch.Groups[1].Value))
+            {
+                track.FileName = MekConvert.Trim(basicMatch.Groups[1].Value);
+                track.FileUrl = new Uri($"{url}{track.FileName}");
+                track.Title = MekConvert.ClearText(basicMatch.Groups[4].Value);
+            }
+
+            //Title strip
+            var titleMatch = new Regex(@"(.+)[(](.*)[)]").Match(track.Title);
+            //Eg: Itt kezdődik (10:53 min. 7,8 Mbyte)"
+            //      1                2
+            if (titleMatch.Success && !string.IsNullOrEmpty(titleMatch.Groups[1].Value))
+            {
+                track.Title = MekConvert.ClearText(titleMatch.Groups[1].Value);
+                track.MetaData = titleMatch.Groups[2].Value.Trim();
+            }
+
+            //Size strip
+            var sizeMatch = new Regex(@"((\d+[.,]?\d+)\s*([MmKk](ega|ilo)?[Bb](yte|ajt|ájt)?))").Match(track.Title);
+            //Eg: 7,8 Mbyte"
+            //    2     3
+            if (sizeMatch.Success && !string.IsNullOrEmpty(sizeMatch.Groups[1].Value))
+                track.Size = sizeMatch.Groups[1].Value.Trim();
+            
+            return track;
         }
         public static AudioBook CreateAudioBookFromMP3Page(string url, string html)
         {
@@ -158,27 +188,10 @@ namespace OszkConnector.Models
             var document = new HtmlDocument();
             document.Load(new StringReader(html));
 
-            var trackRegex = new Regex(@"((\d+)?.+\.(mp3))?\s?-\s?(.+)");
-            //Eg: "01_bojgas.mp3 - Itt kezdődik (10:53 min. 7,8 Mbyte)"
-            //     2     1    3           4                
-
             foreach (var li in document.DocumentNode.SelectNodes("//li"))
                 try
                 {
-                    var match = trackRegex.Match(li.InnerText);
-                    if (match.Success && !string.IsNullOrEmpty(match.Groups[1].Value))
-                    {
-                        var fileName = MekConvert.Trim(match.Groups[1].Value);
-                        var audioBookTrack = new AudioBookTrack() //TODO: parser
-                        {
-                            FileName = fileName,
-                            FileUrl = new Uri($"{url}{fileName}"),
-                            Title = MekConvert.ClearText(match.Groups[4].Value)
-                        };
-                        
-                        var title = match.Groups[4].Value;
-                        audioBook.Tracks.Add(audioBookTrack);
-                    }
+                    audioBook.Tracks.Add(CreateAudioBookTrack(url, li.InnerText));
                 }
                 catch
                 {
