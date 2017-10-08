@@ -19,10 +19,13 @@ namespace OszkConnector.Models
         public string Title { get; set; }
 
         [DataMember(EmitDefaultValue = false)]
-        public string Length { get; set; }
+        public Int64 Length { get; set; }
 
         [DataMember(EmitDefaultValue = false)]
         public string Size { get; set; }
+
+        [DataMember(EmitDefaultValue = false)]
+        public string MetaData { get; set; }
 
         public override string ToString()
         {
