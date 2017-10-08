@@ -160,6 +160,9 @@ namespace OszkConnector.Models
                 track.FileName = MekConvert.Trim(basicMatch.Groups[1].Value);
                 track.FileUrl = new Uri($"{url}{track.FileName}");
                 track.Title = MekConvert.ClearText(basicMatch.Groups[4].Value);
+            } else
+            {
+                throw new FormatException($"{trackLine} could not be parsed");
             }
 
             //Title strip
@@ -195,8 +198,13 @@ namespace OszkConnector.Models
                         Convert.ToInt32("0" + lengthMatch.Groups[5].Value)
                     );
                 }
+                catch (Exception e)
+                {
+                    //TODO: log properly parsing error
+                    throw e;
+                }
                 finally {
-                    track.LengthTotalSeconds = timeSpan.TotalSeconds;
+                    track.LengthTotalSeconds = (int)timeSpan.TotalSeconds;
                 }
             }
             return track;
@@ -214,9 +222,11 @@ namespace OszkConnector.Models
                 {
                     audioBook.Tracks.Add(CreateAudioBookTrack(url, li.InnerText));
                 }
-                catch
+                catch (FormatException fe) { } //TODO: log
+                catch (Exception e)
                 {
                     //TODO: log parse error
+                    throw e;
                 }
 
             var catalog = CatalogResolver.Resolve(url);
