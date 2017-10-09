@@ -63,42 +63,58 @@ namespace OszkConnector.Models
 
         [DataMember(EmitDefaultValue = false)]
         public string Author { get; set; }
+
         [DataMember(EmitDefaultValue = false)]
         public string Title { get; set; }
 
         [DataMember(EmitDefaultValue = false)]
         public string Urn { get; set; }
+
         [DataMember(EmitDefaultValue = false)]
         public string MekId { get; set; }
 
         [DataMember(EmitDefaultValue = false)]
         public Uri Source { get; set; }
+
         [DataMember(EmitDefaultValue = false)]
         public string Language { get; set; }
+
         [DataMember(EmitDefaultValue = false)]
         public string Period { get; set; }
+
         [DataMember(EmitDefaultValue = false)]
         public string Contents { get; set; }
+
         [DataMember(EmitDefaultValue = false)]
         public string Prologue { get; set; }
+
         [DataMember(EmitDefaultValue = false)]
         public string Epilogue { get; set; }
+
         [DataMember(EmitDefaultValue = false)]
         public string Summary { get; set; }
+
         [DataMember(EmitDefaultValue = false)]
         public string Publisher { get; set; }
+
         [DataMember(EmitDefaultValue = false)]
         public string PublishYear { get; set; }
+
         [DataMember(EmitDefaultValue = false)]
         public string PublishPlace { get; set; }
+
         [DataMember(EmitDefaultValue = false)]
         public List<Contributor> Creators { get; set; }
+
         [DataMember(EmitDefaultValue = false)]
         public List<Contributor> Contributors { get; set; }
+
         [DataMember(EmitDefaultValue = false)]
         public List<string> Topics { get; set; }
+
         [DataMember(EmitDefaultValue = false)]
         public List<string> Tags { get; set; }
+
         [DataMember(EmitDefaultValue = false)]
         public List<string> KeyWords { get; set; }
 
@@ -127,10 +143,33 @@ namespace OszkConnector.Models
             return false;
         }
 
-        public void Merge(Book from)
+        public void Copy(Book from)
         {
-            //TODO:
-            throw new NotImplementedException();
+            this.Author = from.Author;
+            this.Contents = from.Contents;
+            this.Contributors = from.Contributors;
+            this.Creators = from.Creators;
+            this.Epilogue = from.Epilogue;
+            this.FullTitle = from.FullTitle;
+            this.Id = from.Id;
+            this.KeyWords = from.KeyWords;
+            this.Language = from.Language;
+            this.MekId = from.MekId;
+            this.Metadata = from.Metadata;
+            this.Period = from.Period;
+            this.Prologue = from.Prologue;
+            this.Publisher = from.Publisher;
+            this.PublishPlace = from.PublishPlace;
+            this.PublishYear = from.PublishYear;
+            this.Related = from.Related;
+            this.Source = from.Source;
+            this.Summary = from.Summary;
+            this.Tags = from.Tags;
+            this.ThumbnailUrl = from.ThumbnailUrl;
+            this.Title = from.Title;
+            this.Topics = from.Topics;
+            this.UrlId = from.UrlId;
+            this.Urn = from.Urn;
         }
     }
 }
