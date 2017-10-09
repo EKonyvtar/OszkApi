@@ -41,7 +41,6 @@ namespace OszkConnector
 
         public async Task<AudioBook> GetAudioBook(string catalogId)
         {
-
             var urlId = CatalogResolver.Resolve(catalogId).UrlId;
             var url = $"{MEK_ENDPOINT_URL}/{urlId}/mp3/";
             var response = await new HttpClient().GetAsync(new Uri(url));
