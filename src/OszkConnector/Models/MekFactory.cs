@@ -34,6 +34,8 @@ namespace OszkConnector.Models
         }
         private static List<Contributor> ContributorsFromNode(HtmlNodeCollection nodeCollection)
         {
+            if (nodeCollection == null) return null;
+
             var contributors = new List<Contributor>();
             foreach (var node in nodeCollection)
                 try
