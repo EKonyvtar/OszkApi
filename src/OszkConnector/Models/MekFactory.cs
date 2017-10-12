@@ -176,14 +176,16 @@ namespace OszkConnector.Models
             }
 
             //Size strip
-            var sizeMatch = new Regex(@"((\d+[.,]?\d+)\s*([MmKk](ega|ilo)?[Bb](yte|ajt|ájt)?))").Match(track.MetaData);
+            var sizeMatch = new Regex(@"((\d+[.,]?\d+)\s*([MmKk](ega|ilo)?[Bb](yte|ajt|ájt)?))").
+                Match(track.MetaData??"");
             //Eg: 7,8 Mbyte
             //    2     3
             if (sizeMatch.Success && !string.IsNullOrEmpty(sizeMatch.Groups[1].Value))
                 track.Size = sizeMatch.Groups[1].Value.Trim();
 
             //Length strip
-            var lengthMatch = new Regex(@"(((\d+):)?(\d+):+(\d+))\s*(min|perc)").Match(track.MetaData);
+            var lengthMatch = new Regex(@"(((\d+):)?(\d+):+(\d+))\s*(min|perc)").
+                Match(track.MetaData??"");
             //Eg: 0:10:53 perc
             //    3  4  5
             if (lengthMatch.Success && !string.IsNullOrEmpty(lengthMatch.Groups[1].Value)) {
