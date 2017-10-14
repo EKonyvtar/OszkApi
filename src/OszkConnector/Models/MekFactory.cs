@@ -122,6 +122,8 @@ namespace OszkConnector.Models
             Uri.TryCreate(StringFromNode(doc.SelectNodes("//mek2/dc_source/act_url")), UriKind.RelativeOrAbsolute, out source);
             book.Source = source;
 
+            book.Type = StringListFromNode(doc.SelectNodes("//mek2/dc_type"));
+
             book.Topics = new List<string>();
             book.Topics.Add(StringFromNode(doc.SelectNodes("//mek2/dc_subject/topicgroup/broadtopic")));
             book.Topics.Add(StringFromNode(doc.SelectNodes("//mek2/dc_subject/topicgroup/topic")));
