@@ -110,6 +110,9 @@ namespace OszkConnector.Models
         public List<Contributor> Contributors { get; set; }
 
         [DataMember(EmitDefaultValue = false)]
+        public List<string> Type { get; set; }
+
+        [DataMember(EmitDefaultValue = false)]
         public List<string> Topics { get; set; }
 
         [DataMember(EmitDefaultValue = false)]
@@ -167,6 +170,7 @@ namespace OszkConnector.Models
             this.Tags = from.Tags;
             this.ThumbnailUrl = from.ThumbnailUrl;
             this.Title = from.Title;
+            this.Type = from.Type;
             this.Topics = from.Topics;
             this.UrlId = from.UrlId;
             this.Urn = from.Urn;
