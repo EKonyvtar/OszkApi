@@ -10,13 +10,20 @@ namespace OszkConnector.Models
         public bool IsFamilyFirst { get; set; } = true;
         public string Role { get; set; }
         public string FamilyName { get; set; }
-        public string GivenName { get; set; } 
+        public string GivenName { get; set; }
+
+        public string FullName {
+            get
+            {
+               return IsFamilyFirst ?
+                    $"{FamilyName} {GivenName}":
+                    $"{GivenName} {FamilyName}";
+            }
+        }
 
         public override string ToString()
         {
-            return IsFamilyFirst?
-                $"{FamilyName} {GivenName}":
-                $"{GivenName} {FamilyName}";
+            return FullName;
         }
     }
 }
