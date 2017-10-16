@@ -44,7 +44,8 @@ namespace OszkConnector.Models
                     {
                         FamilyName = MekConvert.ClearText(node.ChildNodes["familyname"]?.InnerText),
                         GivenName = MekConvert.ClearText(node.ChildNodes["givenname"]?.InnerText),
-                        Role = MekConvert.ClearText(node.ChildNodes["role"]?.InnerText)
+                        Role = MekConvert.ClearText(node.ChildNodes["role"]?.InnerText),
+                        IsFamilyFirst = MekConvert.ClearText(node.ChildNodes["invert"].InnerText) == "nem"
                     });
                 }
                 catch
