@@ -9,8 +9,6 @@ namespace OszkConnector
 {
     public class MekCatalog
     {
-        private const string MEK_ENDPOINT_URL = "http://mek.oszk.hu";
-
         private static KeyValuePair<string, string> data(string field, string value = null)
         {
             return new KeyValuePair<string, string>(field, value);
@@ -36,7 +34,7 @@ namespace OszkConnector
 
         public static async Task<IQueryable<Book>> SearchAsync(string query = "", string format = "")
         {
-            var uri = new Uri($"{MEK_ENDPOINT_URL}/katalog/kataluj.php3");
+            var uri = new Uri($"{Client.MEK_ENDPOINT_URL}/katalog/kataluj.php3");
             var filter = new List<KeyValuePair<string, string>>();
 
             filter.Add(data("szerint", "cimsz"));

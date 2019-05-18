@@ -11,7 +11,19 @@ namespace OszkConnector
 {
     public class Client
     {
-        private const string MEK_ENDPOINT_URL = "http://mek.oszk.hu";
+        public const string MEK_ENDPOINT_URL = "https://mek.oszk.hu";
+
+        private async Task<HttpResponseMessage> GetAsync(Uri uri)
+        {
+            var baseAddress = new Uri(MEK_ENDPOINT_URL);
+            var cookieContainer = new System.Net.CookieContainer();
+            using (var handler = new HttpClientHandler() { CookieContainer = cookieContainer })
+            using (var client = new HttpClient(handler) { BaseAddress = baseAddress })
+            {
+                cookieContainer.Add(baseAddress, new System.Net.Cookie("nagykoru", "igen"));
+                return await client.GetAsync(uri);
+            }
+        }
 
         public async Task<IQueryable<Book>> FindAudioBook(string query = "")
         {
@@ -34,7 +46,7 @@ namespace OszkConnector
         {
             var urlId = CatalogResolver.Resolve(catalogId).UrlId;
             var uri = new Uri($"{MEK_ENDPOINT_URL}/{urlId}/index.xml");
-            var response = await new HttpClient().GetAsync(uri);
+            var response = await GetAsync(uri);
             var html = MekConvert.ToUtf8(await response.Content.ReadAsByteArrayAsync());
             return MekFactory.CreateBookFromIndex(html);
         }
@@ -43,7 +55,7 @@ namespace OszkConnector
         {
             var urlId = CatalogResolver.Resolve(catalogId).UrlId;
             var url = $"{MEK_ENDPOINT_URL}/{urlId}/mp3/";
-            var response = await new HttpClient().GetAsync(new Uri(url));
+            var response = await GetAsync(new Uri(url));
             var html = MekConvert.ToUtf8(await response.Content.ReadAsByteArrayAsync());
             var audioBook = await GetBook(catalogId);
             var trackBook = MekFactory.CreateAudioBookFromMP3Page(url, html);
