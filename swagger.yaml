@@ -7,7 +7,7 @@ info:
   contact:
     name: Ákos Muráti
     email: akos@murati.hu
-    url: http://murati.hu
+    url: https://murati.hu
   license:
     name: MIT
     url: http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT
