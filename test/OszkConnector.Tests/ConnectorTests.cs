@@ -1,10 +1,5 @@
 ﻿using OszkConnector;
 using OszkConnector.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Xunit;
 
 namespace Tests
 {

@@ -1,6 +1,8 @@
-# OszkApi
-OSzK API is an open-source ASP.NET Core Web API for the National Széchenyi Library of Hungary.
-It provides a standard REST api endpoint to query Books, AudioBooks and other publication.
+# Oszk Api
+OSzK API is an open-source ASP.NET Core Web API for the National
+Széchenyi Library of Hungary.
+It provides a standard REST api endpoint to query Books,
+AudioBooks and other publication.
 
 ## Usage
 ```powershell

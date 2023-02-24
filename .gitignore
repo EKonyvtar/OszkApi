@@ -82,10 +82,7 @@ ipch/
 *.sdf
 *.cachefile
 *.VC.db
-<<<<<<< HEAD
-=======
 *.VC.VC.opendb
->>>>>>> origin/master
 
 # Visual Studio profiler
 *.psess
@@ -144,15 +141,6 @@ publish/
 # Publish Web Output
 *.[Pp]ublish.xml
 *.azurePubxml
-<<<<<<< HEAD
-
-# TODO: Un-comment the next line if you do not want to checkin
-# your web deploy settings because they may include unencrypted
-# passwords
-#*.pubxml
-*.publishproj
-
-=======
 # TODO: Comment the next line if you want to checkin your web deploy settings
 # but database connection strings (with potential passwords) will be unencrypted
 *.pubxml
@@ -163,7 +151,6 @@ publish/
 # in these scripts will be unencrypted
 PublishScripts/
 
->>>>>>> origin/master
 # NuGet Packages
 *.nupkg
 # The packages folder can be ignored because of Package Restore
@@ -184,17 +171,11 @@ csx/
 ecf/
 rcf/
 
-<<<<<<< HEAD
-# Windows Store app package directory
-AppPackages/
-BundleArtifacts/
-=======
 # Windows Store app package directories and files
 AppPackages/
 BundleArtifacts/
 Package.StoreAssociation.xml
 _pkginfo.txt
->>>>>>> origin/master
 
 # Visual Studio cache files
 # files ending in .cache can be ignored
@@ -204,10 +185,7 @@ _pkginfo.txt
 
 # Others
 ClientBin/
-<<<<<<< HEAD
 [Ss]tyle[Cc]op.*
-=======
->>>>>>> origin/master
 ~$*
 *~
 *.dbmdl
@@ -217,13 +195,10 @@ ClientBin/
 node_modules/
 orleans.codegen.cs
 
-<<<<<<< HEAD
-=======
 # Since there are multiple workflows, uncomment next line to ignore bower_components
 # (https://github.com/github/gitignore/pull/1529#issuecomment-104372622)
 #bower_components/
 
->>>>>>> origin/master
 # RIA/Silverlight projects
 Generated_Code/
 
@@ -267,17 +242,10 @@ FakesAssemblies/
 **/*.Server/ModelManifest.xml
 _Pvt_Extensions
 
-<<<<<<< HEAD
 # LightSwitch generated files
 GeneratedArtifacts/
 ModelManifest.xml
 
-# Paket dependency manager
-.paket/paket.exe
-
-# FAKE - F# Make
-.fake/
-=======
 # Paket dependency manager
 .paket/paket.exe
 paket-files/
@@ -288,4 +256,3 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
->>>>>>> origin/master

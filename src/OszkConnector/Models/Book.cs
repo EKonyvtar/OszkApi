@@ -27,7 +27,7 @@ namespace OszkConnector.Models
 
         private string _fullTitle = null;
         [DataMember(Order = 1, EmitDefaultValue = false)]
-        public new string FullTitle
+        public string FullTitle
         {
             get { return _fullTitle ?? $"{Author}: {Title}"; }
             set { _fullTitle = value; }
@@ -144,6 +144,11 @@ namespace OszkConnector.Models
                 //TODO: logging
             }
             return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
         }
 
         public void Copy(Book from)

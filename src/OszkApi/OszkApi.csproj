@@ -1,39 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <AssemblyTitle>OSzk API</AssemblyTitle>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-    <DebugType>portable</DebugType>
-    <PreserveCompilationContext>true</PreserveCompilationContext>
-    <AssemblyName>OszkApi</AssemblyName>
-    <OutputType>Exe</OutputType>
-    <PackageId>OszkApi</PackageId>
-
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
   <ItemGroup>
-    <None Update="Dockerfile.debug;Dockerfile;docker-compose.debug.yml;docker-compose.yml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </None>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OszkConnector\OszkConnector.csproj" />
+    <ProjectReference Include="..\OszkConnector\OszkConnector.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="1.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="1.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="1.0.3" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="1.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="1.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.0.2" />
-    <PackageReference Include="HtmlAgilityPack.NetCore" Version="1.5.0.1" />
-  </ItemGroup>
-
 </Project>
