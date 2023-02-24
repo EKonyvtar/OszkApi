@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace OszkConnector.Models
 {
@@ -43,15 +44,21 @@ namespace OszkConnector.Models
             if (string.IsNullOrWhiteSpace(text))
                 return null;
 
-            //TODO: Unescape text
-            //text = HttpUtility.HtmlDecode(text);
-
             // Fix text
             text = text.
                 Replace(STR_NBSP, " ").
                 Replace("û", "ű").
                 Replace("Õ", "Ő").
-                Replace("õ", "ő");
+                Replace("õ", "ő").
+                Replace("õ", "ő").
+                Replace("&amp;", "&").
+                Replace("&#194;", "ja"). //Â"). // 13799
+                Replace("&#269;", "cs"). //č"). // TODO: Fix char encoding
+                Replace("&#251;", "ju"); // û");
+
+            // TODO: Unescape text
+            text = HttpUtility.HtmlDecode(text);
+            
 
             //Multiline Trim
             var middle = new Regex(REGEX_AUDIOBOOK);
