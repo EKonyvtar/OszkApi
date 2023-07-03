@@ -10,6 +10,6 @@
     <None Remove="HtmlAgilityPack" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.48" />
   </ItemGroup>
 </Project>
