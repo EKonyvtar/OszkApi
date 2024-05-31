@@ -224,20 +224,37 @@ namespace OszkConnector.Models
             var document = new HtmlDocument();
             document.Load(new StringReader(html));
 
-            foreach (var li in document.DocumentNode.SelectNodes("//li"))
-                try
-                {
-                    audioBook.Tracks.Add(CreateAudioBookTrack(url, li.InnerText));
-                }
-                catch (FormatException fe) { } //TODO: log
-                catch (Exception e)
-                {
-                    //TODO: log parse error
-                    throw e;
-                }
-
             var catalog = CatalogResolver.Resolve(url);
             audioBook.Id = catalog?.Id;
+
+            try
+            {
+                foreach (var li in document.DocumentNode.SelectNodes("//li"))
+                    try
+                    {
+                        audioBook.Tracks.Add(CreateAudioBookTrack(url, li.InnerText));
+                    }
+                    catch (FormatException fe) { } //TODO: log
+                    catch (Exception e)
+                    {
+                        //TODO: log parse error
+                        throw e;
+                    }
+            } catch(Exception e)
+            {
+                // /25185.mp3
+                var singleFile = $"{catalog.IntId}.mp3";
+                var fileUrl = new Uri(catalog.FullUrl.Replace("mp3/", singleFile));
+
+                //var response = await GetAsync(new Uri(fileUrl));
+                audioBook.Tracks.Add(new AudioBookTrack()
+                {
+                    FileName = singleFile,
+                    FileUrl = fileUrl
+                });
+                return audioBook;
+            }
+
             return audioBook;
         }
 

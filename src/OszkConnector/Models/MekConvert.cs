@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 
+
 namespace OszkConnector.Models
 {
     public class MekConvert
@@ -17,14 +18,17 @@ namespace OszkConnector.Models
 
         private static Regex REGEX_TITLE = new Regex($"^(.*){STR_NBSP}(.*)$");
 
+        public static string ToIso88592(byte[] byteArray)
+        {
+            var iso = Encoding.GetEncoding("ISO-8859-1");
+            string isoString = iso.GetString(byteArray);
+            return isoString;
+        }
+
         public static string ToUtf8(byte[] byteArray)
         {
-            //TODO: Implement legacy conversion from ISO-8859-2
-            var iso = Encoding.GetEncoding("ISO-8859-1");
-            var utf8 = Encoding.UTF8;
-            var utf8Bytes = Encoding.Convert(iso, utf8, byteArray);
-
-            return utf8.GetString(utf8Bytes);
+            string utf8String = Encoding.UTF8.GetString(byteArray);
+            return utf8String;
         }
 
         public static string Trim(string text)
