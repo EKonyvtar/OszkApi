@@ -243,7 +243,7 @@ namespace OszkConnector.Models
             } catch(Exception e)
             {
                 // /25185.mp3
-                var singleFile = $"{catalog.IntId}.mp3";
+                var singleFile = $"{catalog.Id}.mp3";
                 var fileUrl = new Uri(catalog.FullUrl.Replace("mp3/", singleFile));
 
                 //var response = await GetAsync(new Uri(fileUrl));

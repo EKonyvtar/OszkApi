@@ -13,6 +13,25 @@ namespace OszkConnector
     {
         public const string MEK_ENDPOINT_URL = "https://mek.oszk.hu";
 
+        private static byte[] FetchUrlContent(Uri uri)
+        {
+            var baseAddress = new Uri(MEK_ENDPOINT_URL);
+            var cookieContainer = new System.Net.CookieContainer();
+            using (var handler = new HttpClientHandler() { CookieContainer = cookieContainer })
+            using (var client = new HttpClient(handler) { BaseAddress = baseAddress })
+            {
+                //client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0(Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0");
+                client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0");
+                cookieContainer.Add(baseAddress, new System.Net.Cookie("SID", "5da0ab8750"));
+                
+                // Make sure to use `GetAwaiter().GetResult()` to avoid deadlocks.
+                HttpResponseMessage response = client.GetAsync(uri).GetAwaiter().GetResult();
+                response.EnsureSuccessStatusCode();
+                byte[] content = response.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult();
+                return content;
+            }
+        }
+
         private async Task<HttpResponseMessage> GetAsync(Uri uri)
         {
             var baseAddress = new Uri(MEK_ENDPOINT_URL);
@@ -46,8 +65,9 @@ namespace OszkConnector
         {
             var urlId = CatalogResolver.Resolve(catalogId).UrlId;
             var uri = new Uri($"{MEK_ENDPOINT_URL}/{urlId}/index.xml");
-            var response = await GetAsync(uri);
-            var html = MekConvert.ToIso88592(await response.Content.ReadAsByteArrayAsync());
+            //var response = await GetAsync(uri);
+            var response = FetchUrlContent(uri);
+            var html = MekConvert.ToIso88592(response);
             return MekFactory.CreateBookFromIndex(html);
         }
 
@@ -56,8 +76,10 @@ namespace OszkConnector
             var urlId = CatalogResolver.Resolve(catalogId).UrlId;
             var url = $"{MEK_ENDPOINT_URL}/{urlId}/mp3/";
             var page = $"{url}index.html";
-            var response = await GetAsync(new Uri(page));
-            var html = MekConvert.ToUtf8(await response.Content.ReadAsByteArrayAsync());
+            //var response = await GetAsync(new Uri(page));
+            var response = FetchUrlContent(new Uri(page));
+            //var html = MekConvert.ToUtf8(await response.Content.ReadAsByteArrayAsync());
+            var html = MekConvert.ToUtf8(response);
             var trackBook = MekFactory.CreateAudioBookFromMP3Page(url, html);
             var audioBook = await GetBook(catalogId);
             trackBook.Copy(audioBook);
