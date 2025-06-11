@@ -269,6 +269,9 @@ namespace OszkConnector.Models
             {
                 try
                 {
+                    // Example: <a href="javascript:showBook('Gárdonyi Géza: Bojgás az világba', 'http://mek.oszk.hu/05700/05712/')"
+                    if (f.InnerText.Trim().StartsWith("https://") || f.InnerText.Trim().StartsWith("http://"))
+                        continue;
                     var url = f.ParentNode.ParentNode.SelectSingleNode("span").FirstChild.InnerText;
                     var catalog = CatalogResolver.Resolve(url);
                     books.Add(new Book()

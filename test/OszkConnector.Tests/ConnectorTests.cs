@@ -12,7 +12,7 @@ namespace Tests
             var result = await client.FindAudioBook("gardonyi");
             Assert.NotNull(result);
 
-            Assert.Equal(result.Count(), 15);
+            Assert.Equal(16, result.Count());
         }
 
         [Fact]
