@@ -11,8 +11,8 @@ dotnet restore
 dotnet run --project ./src/OszkApi
 
 # Test API endpoints
-curl 'http://localhost:5000/api/audiobooks'
-curl 'http://localhost:5000/api/audiobooks?query=gardonyi'
+curl 'http://localhost:5009/api/audiobooks'
+curl 'http://localhost:5009/api/audiobooks?query=gardonyi'
 ```
 
 ### Hosting
