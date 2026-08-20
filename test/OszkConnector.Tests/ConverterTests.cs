@@ -1,4 +1,5 @@
 ﻿using OszkConnector.Models;
+using System.Text;
 
 namespace Tests
 {
@@ -18,7 +19,9 @@ namespace Tests
         [Fact]
         public void BookTitle()
         {
-            //TODO
+            var content = Encoding.UTF8.GetBytes("Gárdonyi Géza");
+
+            Assert.Equal("Gárdonyi Géza", MekConvert.ToIso88592(content));
         }
     }
 }

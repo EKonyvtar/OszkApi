@@ -50,7 +50,7 @@ namespace OszkConnector
             var content = new FormUrlEncodedContent(MekConvert.ToKeyValuePair(postData));
 
             var response = await new HttpClient().PostAsync(uri, content);
-            var html = MekConvert.ToUtf8(await response.Content.ReadAsByteArrayAsync());
+            var html = MekConvert.ToIso88592(await response.Content.ReadAsByteArrayAsync());
             var books = MekFactory.CreateBookListFromResultPage(html);
             return books;
         }
@@ -78,7 +78,7 @@ namespace OszkConnector
             //var response = await GetAsync(new Uri(page));
             var response = FetchUrlContent(new Uri(page));
             //var html = MekConvert.ToUtf8(await response.Content.ReadAsByteArrayAsync());
-            var html = MekConvert.ToUtf8(response);
+            var html = MekConvert.ToIso88592(response);
             var trackBook = MekFactory.CreateAudioBookFromMP3Page(url, html);
             var audioBook = await GetBook(catalogId);
             trackBook.Copy(audioBook);
